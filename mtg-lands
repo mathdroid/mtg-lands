@@ -1,0 +1,416 @@
+#!/usr/bin/env python3
+"""
+mtg-lands - classify and rank the dual/fixing lands for any color identity.
+
+Wraps `scry search --json` (the scry CLI). For a color pair it pulls every
+Commander-legal land whose color identity fits the pair and that can produce
+both colors, then sorts each land into a known cycle (true dual, shock, fast,
+check, pain, filter, verge, ...) using color-agnostic oracle-text patterns.
+
+Lands are ranked TIER FIRST (fixing quality), then by a popularity+price
+combo within each tier, so an unconditional true dual always lands at the top
+regardless of price-data gaps.
+
+A 3-color identity is just the union of its three pairs, which also pulls in
+trilands and rainbow lands.
+
+Usage:
+  mtg-lands rg                 # one pair (letters or guild name: rg / gruul)
+  mtg-lands bant               # one triple (letters or shard/wedge: gur / temur)
+  mtg-lands --all-pairs        # all 10 guilds
+  mtg-lands --all-triples      # all 10 shards/wedges
+  mtg-lands rg --generic       # also expand the any-color (rainbow) lands
+  mtg-lands rg --json          # machine-readable classification
+
+Requires the `scry` binary on PATH (or set SCRY_BIN).
+"""
+
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+
+SCRY_BIN = os.environ.get("SCRY_BIN", "scry")
+
+# Self-throttle across scry subprocesses so batch runs (--all-pairs /
+# --all-triples) stay well under Scryfall's 10 req/s ceiling.
+_MIN_INTERVAL = 0.3
+_last_call = [0.0]
+
+WUBRG = "wubrg"
+BASIC = {"w": "plains", "u": "island", "b": "swamp", "r": "mountain", "g": "forest"}
+BASIC_WORDS = set(BASIC.values())
+
+GUILDS = {
+    "wu": "Azorius", "ub": "Dimir", "br": "Rakdos", "rg": "Gruul", "gw": "Selesnya",
+    "wb": "Orzhov", "ur": "Izzet", "bg": "Golgari", "rw": "Boros", "gu": "Simic",
+}
+TRIOMES = {
+    "gwu": "Bant", "wub": "Esper", "ubr": "Grixis", "brg": "Jund", "rgw": "Naya",
+    "wbg": "Abzan", "urw": "Jeskai", "bgu": "Sultai", "rwb": "Mardu", "gur": "Temur",
+}
+NAME_TO_KEY = {}
+for k, v in list(GUILDS.items()) + list(TRIOMES.items()):
+    NAME_TO_KEY[v.lower()] = k
+
+
+def canon_colors(s):
+    """Return a canonical WUBRG-ordered color string from letters or a name."""
+    s = s.strip().lower()
+    if s in NAME_TO_KEY:
+        s = NAME_TO_KEY[s]
+    letters = [c for c in s if c in WUBRG]
+    seen = []
+    for c in WUBRG:
+        if c in letters and c not in seen:
+            seen.append(c)
+    return "".join(seen)
+
+
+def combo_name(colors):
+    return GUILDS.get(colors) or TRIOMES.get(colors) or colors.upper()
+
+
+# ---------------------------------------------------------------------------
+# Scryfall fetch (via the scry CLI)
+# ---------------------------------------------------------------------------
+
+def scry_search(query):
+    wait = _MIN_INTERVAL - (time.time() - _last_call[0])
+    if wait > 0:
+        time.sleep(wait)
+    _last_call[0] = time.time()
+    try:
+        out = subprocess.run(
+            [SCRY_BIN, "search", query, "--json"],
+            capture_output=True, text=True,
+        )
+    except FileNotFoundError:
+        sys.exit("error: `%s` not found. Install scry or set SCRY_BIN." % SCRY_BIN)
+    if out.returncode != 0:
+        sys.exit("scry failed: %s" % (out.stderr.strip() or out.stdout.strip()))
+    return json.loads(out.stdout or "[]")
+
+
+def pair_query(colors):
+    prod = ",".join(colors)
+    return "f:c t:land id:%s produces:%s" % (colors, prod)
+
+
+def fetch_lands(colors):
+    """Return deduped card list for a pair or triple identity."""
+    if len(colors) <= 2:
+        cards = scry_search(pair_query(colors))
+    else:
+        # triple = union of its 3 pairs (the 2-color duals + rainbow), PLUS a
+        # query at the full triple identity (trilands and other lands that make
+        # all 3 colors, whose 3-color identity is excluded by the pair queries).
+        seen, cards = set(), []
+        queries = [pair_query(colors[i] + colors[j])
+                   for i in range(len(colors))
+                   for j in range(i + 1, len(colors))]
+        queries.append(pair_query(colors))  # produces all three
+        for q in queries:
+            for c in scry_search(q):
+                oid = c.get("oracle_id") or c.get("name")
+                if oid not in seen:
+                    seen.add(oid)
+                    cards.append(c)
+    return cards
+
+
+# ---------------------------------------------------------------------------
+# Card helpers
+# ---------------------------------------------------------------------------
+
+def oracle(c):
+    if c.get("oracle_text"):
+        return c["oracle_text"]
+    return " // ".join(f.get("oracle_text", "") for f in c.get("card_faces", []))
+
+
+def type_line(c):
+    return c.get("type_line", "")
+
+
+def produced(c):
+    return set(x for x in c.get("produced_mana", []) if x.lower() in WUBRG)
+
+
+def basic_types_in(tl):
+    low = tl.lower()
+    return [w for w in BASIC_WORDS if re.search(r"\b%s\b" % w, low)]
+
+
+def price(c):
+    p = c.get("prices", {}) or {}
+    for k in ("usd", "usd_foil", "usd_etched"):
+        v = p.get(k)
+        if v:
+            try:
+                return float(v)
+            except ValueError:
+                pass
+    return None
+
+
+def edhrec(c):
+    return c.get("edhrec_rank") or 10 ** 9
+
+
+# ---------------------------------------------------------------------------
+# Cycle taxonomy. Each entry: (tier, name, predicate). First match wins, so
+# specific cycles come before generic ones. Predicates take (text, tl, c)
+# where `text` is lowercased oracle text, `tl` lowercased type line.
+# ---------------------------------------------------------------------------
+
+def is_dfc(c):
+    return len(c.get("card_faces", [])) >= 2 and " // " in type_line(c)
+
+
+def both_faces_land(c):
+    faces = c.get("card_faces", [])
+    return len(faces) == 2 and all("land" in f.get("type_line", "").lower() for f in faces)
+
+
+def has_filter(text, c):
+    raw = oracle(c).lower()
+    cols = sorted(x.lower() for x in produced(c))
+    if len(cols) != 2:
+        return False
+    a, b = cols
+    if ("{%s/%s}" % (a, b)) in raw or ("{%s/%s}" % (b, a)) in raw:
+        return True
+    # old filters: "{1}, {t}: add {a}{b}" style
+    return bool(re.search(r"\{1\},?\s*\{t\}:\s*add \{[wubrg]\}\{[wubrg]\}", raw))
+
+
+def is_rainbow(text, c):
+    if len(produced(c)) >= 4:
+        return True
+    for kw in ("any color", "any type", "any one color", "combination of colors",
+               "mana of any"):
+        if kw in text:
+            return True
+    return False
+
+
+CYCLES = [
+    # --- generic / rainbow (any-color), handled in its own section ---
+    ("G", "Rainbow (any color)", lambda t, tl, c: is_rainbow(t, c)),
+
+    # --- multi-card / triland ---
+    ("T1", "Triland", lambda t, tl, c: len(produced(c)) == 3 and not is_rainbow(t, c)),
+    ("T1", "Pathway (MDFC)", lambda t, tl, c: is_dfc(c) and both_faces_land(c)),
+    ("T1", "MDFC spell/land", lambda t, tl, c: is_dfc(c) and not both_faces_land(c)),
+
+    # --- T0: unconditional true dual ---
+    ("T0", "True dual (ABUR)", lambda t, tl, c: (
+        len(basic_types_in(tl)) >= 2
+        and not any(k in t for k in (
+            "enters tapped", "pay", "damage", "gain", "unless",
+            "sacrifice", "reveal", "counter", "scry", "surveil")))),
+
+    # --- T1: premium untapped / conditionally untapped ---
+    ("T1", "Shock", lambda t, tl, c: len(basic_types_in(tl)) >= 2 and "pay 2 life" in t),
+    ("T1", "Battle/Tango", lambda t, tl, c: "unless you control two or more basic lands" in t),
+    ("T1", "Check", lambda t, tl, c: (
+        "enters tapped unless you control a" in t
+        and any(w in t for w in BASIC_WORDS))),
+    ("T1", "Fast", lambda t, tl, c: "unless you control two or fewer other lands" in t),
+    ("T1", "Slow", lambda t, tl, c: "unless you control two or more other lands" in t),
+    ("T1", "Pain", lambda t, tl, c: "deals 1 damage to you" in t and "add {c}" in t),
+    ("T1", "Filter", lambda t, tl, c: has_filter(t, c)),
+    ("T1", "Verge", lambda t, tl, c: (
+        "activate only if you control a" in t and any(w in t for w in BASIC_WORDS)
+        and "enters tapped" not in t and "becomes" not in t)),
+    ("T1", "Bond (crowd)", lambda t, tl, c: "two or more opponents" in t),
+    ("T1", "Horizon/Canopy", lambda t, tl, c: "pay 1 life: add" in t and "draw a card" in t),
+    ("T1", "Reverse-pain", lambda t, tl, c: "each opponent gains 1 life" in t),
+    ("T1", "Reveal", lambda t, tl, c: "you may reveal a" in t and "enters tapped" in t),
+
+    # --- T2: enters tapped, with upside ---
+    ("T2", "Creature land", lambda t, tl, c: "becomes a" in t and "creature" in t),
+    ("T2", "Bounce/Karoo", lambda t, tl, c: "return a land you control to its owner" in t),
+    ("T2", "Scry/Temple", lambda t, tl, c: "enters tapped" in t and "scry 1" in t),
+    ("T2", "Surveil", lambda t, tl, c: "enters tapped" in t and "surveil" in t),
+    ("T2", "Gain/Refuge", lambda t, tl, c: "enters tapped" in t and "gain 1 life" in t),
+    ("T2", "Cycling/Bicycle", lambda t, tl, c: "cycling" in t and len(basic_types_in(tl)) >= 2),
+    ("T2", "Snow dual", lambda t, tl, c: "snow" in tl),
+    ("T2", "Storage", lambda t, tl, c: "storage counter" in t),
+
+    # --- T3: plain tapped / weak ---
+    ("T3", "Depletion", lambda t, tl, c: "depletion counter" in t),
+    ("T3", "Locked", lambda t, tl, c: "doesn't untap during your" in t),
+    ("T3", "Guildgate", lambda t, tl, c: "gate" in tl),
+    ("T2", "Tapped utility", lambda t, tl, c: "enters tapped" in t and len(t) > 90),
+    ("T3", "Plain tapland", lambda t, tl, c: "enters tapped" in t),
+]
+
+TIER_RANK = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "G": 4}
+TIER_LABEL = {
+    "T0": "T0 - True dual (untapped, no drawback)",
+    "T1": "T1 - Untapped / conditionally untapped",
+    "T2": "T2 - Enters tapped, with upside",
+    "T3": "T3 - Plain tapped / weak",
+    "G": "Generic - taps for ANY color (usable outside this identity)",
+}
+
+
+def classify(c):
+    t = oracle(c).lower()
+    tl = type_line(c).lower()
+    for tier, name, pred in CYCLES:
+        try:
+            if pred(t, tl, c):
+                return tier, name
+        except Exception:
+            continue
+    return "T3", "Other"
+
+
+# ---------------------------------------------------------------------------
+# Scoring: percentile combo of popularity (EDHREC) and price, within the set.
+# Used only to order cards inside a tier; the tier itself dominates.
+# ---------------------------------------------------------------------------
+
+def score_cards(cards):
+    n = len(cards)
+    if n == 0:
+        return
+    by_rank = sorted(cards, key=edhrec)
+    rpos = {id(c): i for i, c in enumerate(by_rank)}
+    priced = [c for c in cards if price(c) is not None]
+    bp = sorted(priced, key=price)
+    ppos = {id(c): i for i, c in enumerate(bp)}
+    m = len(bp)
+    for c in cards:
+        rpct = 1 - (rpos[id(c)] / (n - 1)) if n > 1 else 1.0
+        if price(c) is None or m <= 1:
+            ppct = rpct  # no price data: lean on popularity, don't penalize
+        else:
+            ppct = ppos[id(c)] / (m - 1)
+        c["_score"] = round(0.5 * rpct + 0.5 * ppct, 3)
+
+
+# ---------------------------------------------------------------------------
+# Report
+# ---------------------------------------------------------------------------
+
+def fmt_price(c):
+    p = price(c)
+    return "n/a" if p is None else "$%.2f" % p
+
+
+def build(colors):
+    cards = fetch_lands(colors)
+    score_cards(cards)
+    for c in cards:
+        c["_tier"], c["_cycle"] = classify(c)
+    return cards
+
+
+def render(colors, cards, show_generic):
+    lines = []
+    name = combo_name(colors)
+    generic = [c for c in cards if c["_tier"] == "G"]
+    specific = [c for c in cards if c["_tier"] != "G"]
+    lines.append("# %s (%s) - %d lands (%d %s-specific, %d generic any-color)" % (
+        name, colors.upper(), len(cards), len(specific),
+        colors.upper(), len(generic)))
+    lines.append("")
+
+    # group specific by tier then cycle
+    for tier in ("T0", "T1", "T2", "T3"):
+        group = [c for c in specific if c["_tier"] == tier]
+        if not group:
+            continue
+        lines.append("## %s" % TIER_LABEL[tier])
+        cycles = {}
+        for c in group:
+            cycles.setdefault(c["_cycle"], []).append(c)
+        # order cycles by their best card's score
+        ordered = sorted(cycles.items(),
+                         key=lambda kv: -max(c["_score"] for c in kv[1]))
+        for cyc, cs in ordered:
+            cs.sort(key=lambda c: -c["_score"])
+            lines.append("")
+            lines.append("### %s" % cyc)
+            for c in cs:
+                lines.append("- %-34s  score %.2f  edh %-6s %s" % (
+                    c["name"], c["_score"], edhrec(c) if edhrec(c) < 10**9 else "-",
+                    fmt_price(c)))
+        lines.append("")
+
+    # generic
+    lines.append("## %s  (%d cards)" % (TIER_LABEL["G"], len(generic)))
+    lines.append("These tap for any color and recur in every identity; treat as "
+                 "generic fixing, not %s cards." % name)
+    generic.sort(key=lambda c: -c["_score"])
+    if show_generic:
+        for c in generic:
+            lines.append("- %-34s  score %.2f  edh %-6s %s" % (
+                c["name"], c["_score"], edhrec(c) if edhrec(c) < 10**9 else "-",
+                fmt_price(c)))
+    else:
+        top = generic[:8]
+        lines.append("Top 8 by score (use --generic to expand all):")
+        for c in top:
+            lines.append("- %-34s  score %.2f  edh %-6s %s" % (
+                c["name"], c["_score"], edhrec(c) if edhrec(c) < 10**9 else "-",
+                fmt_price(c)))
+    lines.append("")
+    return "\n".join(lines)
+
+
+def as_json(colors, cards):
+    out = []
+    for c in cards:
+        out.append({
+            "name": c["name"],
+            "colors": colors,
+            "tier": c["_tier"],
+            "cycle": c["_cycle"],
+            "score": c.get("_score"),
+            "edhrec_rank": None if edhrec(c) >= 10**9 else edhrec(c),
+            "price_usd": price(c),
+            "produced": sorted(produced(c)),
+        })
+    return out
+
+
+def main(argv):
+    args = [a for a in argv if not a.startswith("--")]
+    flags = set(a for a in argv if a.startswith("--"))
+    show_generic = "--generic" in flags
+    want_json = "--json" in flags
+
+    targets = []
+    if "--all-pairs" in flags:
+        targets = list(GUILDS.keys())
+    elif "--all-triples" in flags:
+        targets = list(TRIOMES.keys())
+    elif args:
+        targets = [canon_colors(a) for a in args]
+    else:
+        sys.exit(__doc__.strip())
+
+    all_json = []
+    for i, colors in enumerate(targets):
+        if not colors:
+            continue
+        cards = build(colors)
+        if want_json:
+            all_json.append({"identity": colors, "cards": as_json(colors, cards)})
+        else:
+            if i:
+                print("\n" + "=" * 72 + "\n")
+            print(render(colors, cards, show_generic))
+    if want_json:
+        print(json.dumps(all_json, indent=2))
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
