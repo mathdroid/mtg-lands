@@ -93,7 +93,16 @@ batch runs (`--all-pairs`, `--all-triples`) are safe.
 
 ## Reports
 
-Pre-generated reports for all pairs and triples live in `reports/`
-(`all-pairs.md`, `all-triples.md`, `all-pairs.json`). Regenerate them, or the
-`all-triples.json` variant, with the commands above. Space batch runs out so you
-do not trip Scryfall's rate limit.
+`reports/` holds two kinds of file:
+
+- **Data** (`all-pairs.json`, `all-triples.json`) - the raw classification
+  straight from `mtg-lands --all-pairs --json` / `--all-triples --json`. This is
+  the source of truth. Regenerate with the commands above (space batch runs out
+  so you do not trip Scryfall's rate limit).
+- **Reports** (`all-pairs.md`, `all-triples.md`) - hand-written markdown that
+  reads the JSON as its source: curated tables, the best picks per identity, and
+  notes. These are authored, not machine-generated, so refresh them by hand when
+  the data changes.
+
+The `scry` CLI it wraps backs off and retries on a Scryfall 429 internally, so
+the data regeneration is resilient to brief rate limiting.

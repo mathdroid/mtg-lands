@@ -1,478 +1,456 @@
-# Azorius (WU) - 175 lands (43 WU-specific, 132 generic any-color)
-
-## T0 - True dual (untapped, no drawback)
-
-### True dual (ABUR)
-- Tundra                              score 0.88  edh 368    n/a
-
-## T1 - Untapped / conditionally untapped
-
-### Bond (crowd)
-- Sea of Clouds                       score 0.94  edh 166    $18.22
-
-### Shock
-- Hallowed Fountain                   score 0.93  edh 65     $8.20
-
-### Slow
-- Deserted Beach                      score 0.87  edh 277    $5.20
-
-### Verge
-- Floodfarm Verge                     score 0.86  edh 714    $8.36
-- Nimbus Maze                         score 0.79  edh 1849   $6.80
-
-### Filter
-- Mystic Gate                         score 0.82  edh 896    $4.00
-- Skycloud Expanse                    score 0.50  edh 348    $0.20
-
-### Pathway (MDFC)
-- Hengegate Pathway // Mistgate Pathway  score 0.80  edh 1152   $5.11
-
-### Check
-- Glacial Fortress                    score 0.77  edh 99     $0.39
-
-### Pain
-- Adarkar Wastes                      score 0.69  edh 159    $0.33
-
-### Battle/Tango
-- Prairie Stream                      score 0.68  edh 106    $0.30
-
-### Fast
-- Seachrome Coast                     score 0.64  edh 1212   $0.36
-
-### Reveal
-- Port Town                           score 0.53  edh 345    $0.23
-- Wanderwine Hub                      score 0.41  edh 13980  $1.76
-- Fortified Beachhead                 score 0.16  edh 12168  $0.24
-
-### MDFC spell/land
-- Suppression Ray // Orderly Plaza    score 0.34  edh 7151   $0.30
-
-## T2 - Enters tapped, with upside
-
-### Surveil
-- Meticulous Archive                  score 0.88  edh 703    $11.68
-- University Campus                   score 0.13  edh 10452  $0.18
-
-### Scry/Temple
-- Temple of Enlightenment             score 0.63  edh 303    $0.29
-
-### Creature land
-- Restless Anchorage                  score 0.61  edh 3799   $1.13
-- Celestial Colonnade                 score 0.52  edh 5504   $0.58
-
-### Bounce/Karoo
-- Azorius Chancery                    score 0.59  edh 436    $0.27
-
-### Snow dual
-- Glacial Floodplain                  score 0.53  edh 3834   $0.37
-- Boreal Shelf                        score 0.41  edh 11613  $0.92
-
-### Gain/Refuge
-- Sejiri Refuge                       score 0.49  edh 4734   $0.37
-- Tranquil Cove                       score 0.41  edh 1075   $0.13
-
-### Cycling/Bicycle
-- Irrigated Farmland                  score 0.49  edh 804    $0.23
-
-### Tapped utility
-- Study                               score 0.35  edh 13181  $0.40
-- Lonely Arroyo                       score 0.29  edh 6449   $0.25
-- Skybridge Towers                    score 0.14  edh 7556   $0.13
-
-### Storage
-- Calciform Pools                     score 0.25  edh 11247  $0.29
-
-## T3 - Plain tapped / weak
-
-### Plain tapland
-- Razortide Bridge                    score 0.62  edh 1033   $0.33
-- Idyllic Beachfront                  score 0.48  edh 2251   $0.26
-- Sharlayan, Nation of Scholars       score 0.26  edh 5359   $0.19
-- Abandoned Campground                score 0.24  edh 9303   $0.27
-- North Pole Gates                    score 0.19  edh 8544   $0.23
-- Meandering River                    score 0.15  edh 7438   $0.13
-- Coastal Tower                       score 0.12  edh 12051  n/a
-
-### Guildgate
-- Azorius Guildgate                   score 0.38  edh 1993   $0.14
-
-### Depletion
-- Land Cap                            score 0.35  edh 27667  $1.01
-
-### Locked
-- Cloudcrest Lake                     score 0.22  edh 22427  $0.32
-- Thalakos Lowlands                   score 0.02  edh 24556  n/a
-
-## Generic - taps for ANY color (usable outside this identity)  (132 cards)
-These tap for any color and recur in every identity; treat as generic fixing, not Azorius cards.
-Top 8 by score (use --generic to expand all):
-- Cavern of Souls                     score 0.97  edh 112    $50.28
-- Nykthos, Shrine to Nyx              score 0.96  edh 170    $50.81
-- Gemstone Caverns                    score 0.96  edh 179    $52.74
-- Mana Confluence                     score 0.96  edh 120    $33.52
-- City of Brass                       score 0.94  edh 98     $10.06
-- Three Tree City                     score 0.94  edh 184    $23.90
-- Reflecting Pool                     score 0.94  edh 173    $16.23
-- Talon Gates of Madara               score 0.91  edh 585    $33.97
-
-
-========================================================================
-
-# Dimir (UB) - 175 lands (43 UB-specific, 132 generic any-color)
-
-## T0 - True dual (untapped, no drawback)
-
-### True dual (ABUR)
-- Underground Sea                     score 0.89  edh 300    n/a
-
-## T1 - Untapped / conditionally untapped
-
-### Bond (crowd)
-- Morphic Pool                        score 0.95  edh 139    $31.11
-
-### Shock
-- Watery Grave                        score 0.95  edh 52     $11.51
-
-### Slow
-- Shipwreck Marsh                     score 0.89  edh 231    $7.47
-
-### Check
-- Drowned Catacomb                    score 0.88  edh 111    $3.43
-
-### Verge
-- Gloomlake Verge                     score 0.87  edh 634    $11.08
-- Tainted Isle                        score 0.76  edh 496    $0.75
-
-### Filter
-- Sunken Ruins                        score 0.83  edh 1048   $9.12
-- Darkwater Catacombs                 score 0.65  edh 312    $0.33
-
-### Pain
-- Underground River                   score 0.83  edh 152    $1.48
-
-### Pathway (MDFC)
-- Clearwater Pathway // Murkwater Pathway  score 0.82  edh 753    $4.23
-
-### Battle/Tango
-- Sunken Hollow                       score 0.77  edh 86     $0.39
-
-### Fast
-- Darkslick Shores                    score 0.76  edh 1366   $2.19
-
-### Reveal
-- Choked Estuary                      score 0.71  edh 289    $0.38
-- Secluded Glen                       score 0.61  edh 4907   $3.67
-
-### MDFC spell/land
-- Waterlogged Teachings // Inundated Archive  score 0.67  edh 1385   $0.40
-
-## T2 - Enters tapped, with upside
-
-### Surveil
-- Undercity Sewers                    score 0.90  edh 434    $17.82
-- Sinister Hideout                    score 0.14  edh 8407   $0.17
-
-### Bounce/Karoo
-- Dimir Aqueduct                      score 0.69  edh 339    $0.37
-
-### Creature land
-- Restless Reef                       score 0.64  edh 3716   $2.66
-- Creeping Tar Pit                    score 0.46  edh 2851   $0.31
-
-### Cycling/Bicycle
-- Fetid Pools                         score 0.59  edh 861    $0.32
-
-### Scry/Temple
-- Temple of Deceit                    score 0.55  edh 330    $0.25
-
-### Snow dual
-- Ice Tunnel                          score 0.54  edh 3975   $0.45
-- Frost Marsh                         score 0.39  edh 11609  $0.78
-
-### Gain/Refuge
-- Jwar Isle Refuge                    score 0.46  edh 4327   $0.35
-- Dismal Backwater                    score 0.42  edh 953    $0.17
-
-### Storage
-- Dreadship Reef                      score 0.34  edh 9496   $0.37
-
-### Tapped utility
-- Waterfront District                 score 0.33  edh 6567   $0.30
-- Secret Passage                      score 0.33  edh 14329  $0.40
-- Soured Springs                      score 0.32  edh 5379   $0.27
-
-## T3 - Plain tapped / weak
-
-### Plain tapland
-- Mistvault Bridge                    score 0.68  edh 1741   $0.60
-- Contaminated Aquifer                score 0.56  edh 2127   $0.34
-- Submerged Boneyard                  score 0.28  edh 4928   $0.23
-- Treno, Dark City                    score 0.25  edh 4919   $0.19
-- Serpent's Pass                      score 0.23  edh 9629   $0.28
-- Salt Marsh                          score 0.17  edh 11196  $0.25
-- Murky Sewer                         score 0.16  edh 8717   $0.20
-
-### Other
-- River of Tears                      score 0.50  edh 2555   $0.32
-
-### Guildgate
-- Dimir Guildgate                     score 0.37  edh 1706   $0.11
-
-### Depletion
-- River Delta                         score 0.35  edh 26529  $1.06
-
-### Locked
-- Waterveil Cavern                    score 0.08  edh 22978  $0.21
-- Rootwater Depths                    score 0.03  edh 23401  n/a
-
-## Generic - taps for ANY color (usable outside this identity)  (132 cards)
-These tap for any color and recur in every identity; treat as generic fixing, not Dimir cards.
-Top 8 by score (use --generic to expand all):
-- Cavern of Souls                     score 0.97  edh 112    $50.28
-- Nykthos, Shrine to Nyx              score 0.96  edh 170    $50.81
-- Gemstone Caverns                    score 0.96  edh 179    $52.74
-- Mana Confluence                     score 0.96  edh 120    $33.52
-- Three Tree City                     score 0.94  edh 184    $23.90
-- Reflecting Pool                     score 0.93  edh 173    $16.23
-- City of Brass                       score 0.93  edh 98     $10.06
-- Talon Gates of Madara               score 0.91  edh 585    $33.97
-
-
-========================================================================
-
-# Rakdos (BR) - 175 lands (42 BR-specific, 133 generic any-color)
-
-## T0 - True dual (untapped, no drawback)
-
-### True dual (ABUR)
-- Badlands                            score 0.89  edh 387    n/a
-
-## T1 - Untapped / conditionally untapped
-
-### Bond (crowd)
-- Luxury Suite                        score 0.95  edh 163    $28.08
-
-### Shock
-- Blood Crypt                         score 0.94  edh 69     $9.91
-
-### Slow
-- Haunted Ridge                       score 0.88  edh 276    $7.92
-
-### Verge
-- Blazemire Verge                     score 0.86  edh 568    $8.81
-- Tainted Peak                        score 0.74  edh 500    $0.48
-
-### Pain
-- Sulfurous Springs                   score 0.83  edh 158    $1.06
-
-### Pathway (MDFC)
-- Blightstep Pathway // Searstep Pathway  score 0.82  edh 813    $5.51
-
-### Filter
-- Graven Cairns                       score 0.82  edh 584    $3.50
-- Shadowblood Ridge                   score 0.70  edh 423    $0.36
-
-### Check
-- Dragonskull Summit                  score 0.81  edh 87     $0.52
-
-### Fast
-- Blackcleave Cliffs                  score 0.76  edh 1067   $1.40
-
-### Battle/Tango
-- Smoldering Marsh                    score 0.72  edh 95     $0.34
-
-### Reveal
-- Foreboding Ruins                    score 0.66  edh 326    $0.33
-- Auntie's Hovel                      score 0.49  edh 11039  $7.47
-
-## T2 - Enters tapped, with upside
-
-### Surveil
-- Raucous Theater                     score 0.89  edh 562    $11.40
-- Ominous Asylum                      score 0.19  edh 8765   $0.24
-
-### Bounce/Karoo
-- Rakdos Carnarium                    score 0.68  edh 476    $0.35
-
-### Scry/Temple
-- Temple of Malice                    score 0.57  edh 415    $0.26
-
-### Tapped utility
-- Jagged Barrens                      score 0.55  edh 3386   $0.40
-- Billiard Room                       score 0.23  edh 13847  $0.32
-- Tramway Station                     score 0.16  edh 6882   $0.11
-
-### Creature land
-- Restless Vents                      score 0.51  edh 4761   $0.41
-- Lavaclaw Reaches                    score 0.39  edh 7446   $0.37
-
-### Gain/Refuge
-- Akoum Refuge                        score 0.50  edh 3582   $0.36
-- Bloodfell Caves                     score 0.46  edh 893    $0.20
-
-### Cycling/Bicycle
-- Canyon Slough                       score 0.49  edh 702    $0.23
-
-### Snow dual
-- Sulfurous Mire                      score 0.41  edh 5352   $0.32
-- Tresserhorn Sinks                   score 0.35  edh 19140  $0.51
-
-### Storage
-- Molten Slagheap                     score 0.13  edh 8269   $0.12
-
-## T3 - Plain tapped / weak
-
-### Other
-- Mount Doom                          score 0.82  edh 1195   $7.96
-
-### Plain tapland
-- Drossforge Bridge                   score 0.70  edh 2167   $1.22
-- Geothermal Bog                      score 0.51  edh 2270   $0.29
-- Vector, Imperial Capital            score 0.33  edh 5509   $0.26
-- Razortrap Gorge                     score 0.26  edh 8119   $0.27
-- Boiling Rock Prison                 score 0.25  edh 8377   $0.27
-- Urborg Volcano                      score 0.24  edh 10900  $0.28
-- Cinder Barrens                      score 0.22  edh 6076   $0.19
-
-### Guildgate
-- Rakdos Guildgate                    score 0.36  edh 1907   $0.09
-
-### Depletion
-- Lava Tubes                          score 0.35  edh 27406  $1.01
-
-### Locked
-- Lantern-Lit Graveyard               score 0.08  edh 22284  $0.20
-- Cinder Marsh                        score 0.03  edh 23088  n/a
-
-## Generic - taps for ANY color (usable outside this identity)  (133 cards)
-These tap for any color and recur in every identity; treat as generic fixing, not Rakdos cards.
-Top 8 by score (use --generic to expand all):
-- Cavern of Souls                     score 0.97  edh 112    $50.28
-- Nykthos, Shrine to Nyx              score 0.96  edh 170    $50.81
-- Gemstone Caverns                    score 0.96  edh 179    $52.74
-- Mana Confluence                     score 0.96  edh 120    $33.52
-- Reflecting Pool                     score 0.94  edh 173    $16.23
-- Three Tree City                     score 0.94  edh 184    $23.90
-- City of Brass                       score 0.93  edh 98     $10.06
-- Talon Gates of Madara               score 0.90  edh 585    $33.97
-
-
-========================================================================
-
-# Gruul (RG) - 173 lands (41 RG-specific, 132 generic any-color)
-
-## T0 - True dual (untapped, no drawback)
-
-### True dual (ABUR)
-- Taiga                               score 0.88  edh 440    n/a
-
-## T1 - Untapped / conditionally untapped
-
-### Shock
-- Stomping Ground                     score 0.93  edh 68     $7.88
-
-### Bond (crowd)
-- Spire Garden                        score 0.88  edh 187    $4.11
-
-### Slow
-- Rockfall Vale                       score 0.84  edh 216    $2.16
-
-### Verge
-- Thornspire Verge                    score 0.84  edh 808    $5.20
-
-### Filter
-- Fire-Lit Thicket                    score 0.83  edh 1251   $7.89
-- Mossfire Valley                     score 0.52  edh 522    $0.22
-
-### Pathway (MDFC)
-- Cragcrown Pathway // Timbercrown Pathway  score 0.81  edh 1051   $3.53
-
-### Pain
-- Karplusan Forest                    score 0.76  edh 221    $0.42
-
-### Battle/Tango
-- Cinder Glade                        score 0.75  edh 85     $0.36
-
-### Check
-- Rootbound Crag                      score 0.75  edh 129    $0.36
-
-### Reverse-pain
-- Grove of the Burnwillows            score 0.69  edh 3347   $7.63
-
-### Fast
-- Copperline Gorge                    score 0.69  edh 1462   $0.43
-
-### MDFC spell/land
-- Stump Stomp // Burnwillow Clearing  score 0.68  edh 1250   $0.38
-
-### Reveal
-- Game Trail                          score 0.65  edh 367    $0.30
-
-## T2 - Enters tapped, with upside
-
-### Surveil
-- Commercial District                 score 0.86  edh 644    $8.38
-- Savage Mansion                      score 0.10  edh 10450  $0.15
-
-### Bounce/Karoo
-- Gruul Turf                          score 0.63  edh 413    $0.29
-
-### Scry/Temple
-- Temple of Abandon                   score 0.60  edh 484    $0.26
-
-### Snow dual
-- Highland Forest                     score 0.59  edh 3135   $0.46
-- Highland Weald                      score 0.25  edh 16398  $0.32
-
-### Cycling/Bicycle
-- Sheltered Thicket                   score 0.56  edh 625    $0.25
-
-### Creature land
-- Restless Ridgeline                  score 0.54  edh 4323   $0.46
-- Raging Ravine                       score 0.36  edh 2651   $0.20
-
-### Gain/Refuge
-- Rugged Highlands                    score 0.43  edh 1352   $0.18
-- Kazandu Refuge                      score 0.31  edh 5727   $0.24
-
-### Tapped utility
-- Bristling Backwoods                 score 0.37  edh 3277   $0.24
-- Dining Room                         score 0.27  edh 15034  $0.33
-- Racers' Ring                        score 0.14  edh 7682   $0.12
-
-### Storage
-- Fungal Reaches                      score 0.06  edh 15035  $0.13
-
-## T3 - Plain tapped / weak
-
-### Plain tapland
-- Wooded Ridgeline                    score 0.53  edh 1721   $0.27
-- Slagwoods Bridge                    score 0.50  edh 3208   $0.33
-- Gongaga, Reactor Town               score 0.27  edh 5970   $0.23
-- Timber Gorge                        score 0.25  edh 8559   $0.25
-- Omashu City                         score 0.22  edh 7716   $0.23
-- Bleeding Woods                      score 0.15  edh 9483   $0.21
-- Shivan Oasis                        score 0.09  edh 13029  $0.15
-
-### Guildgate
-- Gruul Guildgate                     score 0.37  edh 2026   $0.14
-
-### Depletion
-- Timberline Ridge                    score 0.36  edh 29078  $1.02
-
-### Locked
-- Pinecrest Ridge                     score 0.12  edh 23946  $0.23
-- Mogg Hollows                        score 0.02  edh 24862  n/a
-
-## Generic - taps for ANY color (usable outside this identity)  (132 cards)
-These tap for any color and recur in every identity; treat as generic fixing, not Gruul cards.
-Top 8 by score (use --generic to expand all):
-- Cavern of Souls                     score 0.98  edh 112    $50.28
-- Nykthos, Shrine to Nyx              score 0.97  edh 170    $50.81
-- Gemstone Caverns                    score 0.97  edh 179    $52.74
-- Mana Confluence                     score 0.96  edh 120    $33.52
-- Reflecting Pool                     score 0.94  edh 173    $16.23
-- Three Tree City                     score 0.94  edh 184    $23.90
-- City of Brass                       score 0.94  edh 98     $10.06
-- Talon Gates of Madara               score 0.91  edh 585    $33.97
-
+# Two-color fixing lands, by guild
+
+Hand-written from the data in [`all-pairs.json`](all-pairs.json) (generated by
+`mtg-lands --all-pairs --json`). For each guild this covers the lands whose
+color identity fits the pair and that can tap for both colors.
+
+**How to read it.** Lands are grouped by fixing-quality tier and, inside a tier,
+by cycle. Within a cycle they are ordered best-first by a combined score
+(EDHREC play rate + price percentile). Tiers:
+
+- **T0** true dual: untapped, no drawback, has basic land types.
+- **T1** untapped or conditionally untapped (shock, check, fast, pain, filter,
+  verge, bond, pathway, slow, battle, horizon, reveal).
+- **T2** enters tapped but pays you back (scry, surveil, creature land, bounce,
+  gain, cycling, snow).
+- **T3** plain tapped or weak. Summarized here; see the JSON for the full list.
+
+Prices marked **RL** are Reserved List duals with no current nonfoil price on
+Scryfall (they are expensive, not free); the score falls back to play rate.
+
+Every guild also matches ~132 **any-color rainbow lands** (City of Brass, Mana
+Confluence, Command Tower, Reflecting Pool, Exotic Orchard, Cavern of Souls,
+and so on). They tap for any color, so they recur in every identity and are
+generic fixing rather than guild cards. They are not repeated per guild below;
+see the `G`-tier entries in [`all-pairs.json`](all-pairs.json).
+
+## Best fixing per guild
+
+| Guild | True dual (T0) | Best conditional (T1) | Most-played T1 |
+|---|---|---|---|
+| Azorius WU | Tundra | Sea of Clouds | Hallowed Fountain |
+| Dimir UB | Underground Sea | Morphic Pool | Watery Grave |
+| Rakdos BR | Badlands | Luxury Suite | Blood Crypt |
+| Gruul RG | Taiga | Stomping Ground | Stomping Ground |
+| Selesnya GW | Savannah | Bountiful Promenade | Temple Garden |
+| Orzhov WB | Scrubland | Vault of Champions | Godless Shrine |
+| Izzet UR | Volcanic Island | Steam Vents | Steam Vents |
+| Golgari BG | Bayou | Overgrown Tomb | Overgrown Tomb |
+| Boros RW | Plateau | Sacred Foundry | Sacred Foundry |
+| Simic GU | Tropical Island | Breeding Pool | Breeding Pool |
+
+---
+
+## Azorius (WU)
+
+43 pair-specific lands + 132 any-color. Premium block runs Tundra into the
+shock/check/pain trio; Sea of Clouds is the standout if you have 2+ opponents.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Tundra | 368 | RL |
+| Bond | Sea of Clouds | 166 | $18.22 |
+| Shock | Hallowed Fountain | 65 | $8.20 |
+| Slow | Deserted Beach | 277 | $5.20 |
+| Verge | Floodfarm Verge | 714 | $8.36 |
+| Verge | Nimbus Maze | 1849 | $6.80 |
+| Filter | Mystic Gate | 896 | $4.00 |
+| Filter | Skycloud Expanse | 348 | $0.20 |
+| Pathway | Hengegate Pathway // Mistgate Pathway | 1152 | $5.11 |
+| Check | Glacial Fortress | 99 | $0.39 |
+| Pain | Adarkar Wastes | 159 | $0.33 |
+| Battle | Prairie Stream | 106 | $0.30 |
+| Fast | Seachrome Coast | 1212 | $0.36 |
+| Reveal | Port Town | 345 | $0.23 |
+| Reveal | Wanderwine Hub | 13980 | $1.76 |
+| Reveal | Fortified Beachhead | 12168 | $0.24 |
+| MDFC | Suppression Ray // Orderly Plaza | 7151 | $0.30 |
+
+### Enters tapped, with upside (T2)
+
+Meticulous Archive (surveil, edh703, $11.68) - Temple of Enlightenment (scry,
+303, $0.29) - Restless Anchorage (creature, 3799, $1.13) - Celestial Colonnade
+(creature, 5504, $0.58) - Azorius Chancery (bounce, 436, $0.27) - Irrigated
+Farmland (cycling, 804, $0.23) - Sejiri Refuge / Tranquil Cove (gain) - Glacial
+Floodplain / Boreal Shelf (snow) - Calciform Pools (storage) - University
+Campus, Study, Lonely Arroyo, Skybridge Towers (tapped utility).
+
+### Filler (T3)
+
+11 lands: plain taplands (Razortide Bridge, Idyllic Beachfront, ...), Azorius
+Guildgate, Land Cap (depletion), Cloudcrest Lake / Thalakos Lowlands (locked).
+
+---
+
+## Dimir (UB)
+
+43 pair-specific lands + 132 any-color. Deep premium pool: shock, check, fast,
+pain, filter, verge all cheap-to-mid and heavily played.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Underground Sea | 300 | RL |
+| Bond | Morphic Pool | 139 | $31.11 |
+| Shock | Watery Grave | 52 | $11.51 |
+| Slow | Shipwreck Marsh | 231 | $7.47 |
+| Check | Drowned Catacomb | 111 | $3.43 |
+| Verge | Gloomlake Verge | 634 | $11.08 |
+| Verge | Tainted Isle | 496 | $0.75 |
+| Filter | Sunken Ruins | 1048 | $9.12 |
+| Filter | Darkwater Catacombs | 312 | $0.33 |
+| Pain | Underground River | 152 | $1.48 |
+| Pathway | Clearwater Pathway // Murkwater Pathway | 753 | $4.23 |
+| Battle | Sunken Hollow | 86 | $0.39 |
+| Fast | Darkslick Shores | 1366 | $2.19 |
+| Reveal | Choked Estuary | 289 | $0.38 |
+| Reveal | Secluded Glen | 4907 | $3.67 |
+| MDFC | Waterlogged Teachings // Inundated Archive | 1385 | $0.40 |
+
+### Enters tapped, with upside (T2)
+
+Undercity Sewers (surveil, edh434, $17.82) - Dimir Aqueduct (bounce, 339, $0.37)
+- Restless Reef / Creeping Tar Pit (creature) - Fetid Pools (cycling, 861,
+$0.32) - Temple of Deceit (scry, 330, $0.25) - Ice Tunnel / Frost Marsh (snow) -
+Jwar Isle Refuge / Dismal Backwater (gain) - Dreadship Reef (storage) -
+Waterfront District, Secret Passage, Soured Springs (tapped utility).
+
+### Filler (T3)
+
+12 lands: plain taplands (Mistvault Bridge, Contaminated Aquifer, ...), River of
+Tears (unique), Dimir Guildgate, River Delta (depletion), Waterveil Cavern /
+Rootwater Depths (locked).
+
+---
+
+## Rakdos (BR)
+
+42 pair-specific lands + 133 any-color. Strong T1; note Mount Doom sits in T3 as
+a one-off but is a pricey, playable utility land.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Badlands | 387 | RL |
+| Bond | Luxury Suite | 163 | $28.08 |
+| Shock | Blood Crypt | 69 | $9.91 |
+| Slow | Haunted Ridge | 276 | $7.92 |
+| Verge | Blazemire Verge | 568 | $8.81 |
+| Verge | Tainted Peak | 500 | $0.48 |
+| Pain | Sulfurous Springs | 158 | $1.06 |
+| Pathway | Blightstep Pathway // Searstep Pathway | 813 | $5.51 |
+| Filter | Graven Cairns | 584 | $3.50 |
+| Filter | Shadowblood Ridge | 423 | $0.36 |
+| Check | Dragonskull Summit | 87 | $0.52 |
+| Fast | Blackcleave Cliffs | 1067 | $1.40 |
+| Battle | Smoldering Marsh | 95 | $0.34 |
+| Reveal | Foreboding Ruins | 326 | $0.33 |
+| Reveal | Auntie's Hovel | 11039 | $7.47 |
+
+### Enters tapped, with upside (T2)
+
+Raucous Theater (surveil, edh562, $11.40) - Rakdos Carnarium (bounce, 476,
+$0.35) - Temple of Malice (scry, 415, $0.26) - Restless Vents / Lavaclaw Reaches
+(creature) - Canyon Slough (cycling, 702, $0.23) - Akoum Refuge / Bloodfell
+Caves (gain) - Sulfurous Mire / Tresserhorn Sinks (snow) - Molten Slagheap
+(storage) - Jagged Barrens, Billiard Room, Tramway Station (tapped utility).
+
+### Filler (T3)
+
+12 lands: Mount Doom (unique, $7.96), plain taplands (Drossforge Bridge,
+Geothermal Bog, ...), Rakdos Guildgate, Lava Tubes (depletion), Lantern-Lit
+Graveyard / Cinder Marsh (locked).
+
+---
+
+## Gruul (RG)
+
+41 pair-specific lands + 132 any-color. Taiga is the only land in the field with
+literally no drawback; after that the shock/check/fast/pain group is the
+backbone. Gruul has a Reverse-pain entry (Grove of the Burnwillows) that the
+other guilds lack here.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Taiga | 440 | RL |
+| Shock | Stomping Ground | 68 | $7.88 |
+| Bond | Spire Garden | 187 | $4.11 |
+| Slow | Rockfall Vale | 216 | $2.16 |
+| Verge | Thornspire Verge | 808 | $5.20 |
+| Filter | Fire-Lit Thicket | 1251 | $7.89 |
+| Filter | Mossfire Valley | 522 | $0.22 |
+| Pathway | Cragcrown Pathway // Timbercrown Pathway | 1051 | $3.53 |
+| Pain | Karplusan Forest | 221 | $0.42 |
+| Battle | Cinder Glade | 85 | $0.36 |
+| Check | Rootbound Crag | 129 | $0.36 |
+| Reverse-pain | Grove of the Burnwillows | 3347 | $7.63 |
+| Fast | Copperline Gorge | 1462 | $0.43 |
+| MDFC | Stump Stomp // Burnwillow Clearing | 1250 | $0.38 |
+| Reveal | Game Trail | 367 | $0.30 |
+
+### Enters tapped, with upside (T2)
+
+Commercial District (surveil, edh644, $8.38) - Gruul Turf (bounce, 413, $0.29) -
+Temple of Abandon (scry, 484, $0.26) - Highland Forest / Highland Weald (snow) -
+Sheltered Thicket (cycling, 625, $0.25) - Restless Ridgeline / Raging Ravine
+(creature) - Rugged Highlands / Kazandu Refuge (gain) - Fungal Reaches (storage)
+- Bristling Backwoods, Dining Room, Racers' Ring (tapped utility).
+
+### Filler (T3)
+
+11 lands: plain taplands (Wooded Ridgeline, Slagwoods Bridge, ...), Gruul
+Guildgate, Timberline Ridge (depletion), Pinecrest Ridge / Mogg Hollows
+(locked).
+
+---
+
+## Selesnya (GW)
+
+42 pair-specific lands + 132 any-color. Horizon Canopy joins the premium block;
+Wooded Bastion is a pricey filter.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Savannah | 471 | RL |
+| Bond | Bountiful Promenade | 213 | $17.20 |
+| Shock | Temple Garden | 82 | $7.52 |
+| Verge | Hushwood Verge | 760 | $7.61 |
+| Slow | Overgrown Farmland | 290 | $2.50 |
+| Pain | Brushland | 241 | $1.51 |
+| Filter | Wooded Bastion | 2018 | $15.79 |
+| Filter | Sungrass Prairie | 439 | $0.25 |
+| Check | Sunpetal Grove | 136 | $0.53 |
+| Pathway | Branchloft Pathway // Boulderloft Pathway | 1131 | $3.57 |
+| Horizon | Horizon Canopy | 1662 | $4.31 |
+| Fast | Razorverge Thicket | 1476 | $0.58 |
+| Battle | Canopy Vista | 103 | $0.29 |
+| MDFC | Strength of the Harvest // Haven of the Harvest | 1923 | $0.35 |
+| Reveal | Fortified Village | 342 | $0.26 |
+
+### Enters tapped, with upside (T2)
+
+Lush Portico (surveil, edh709, $5.83) - Temple of Plenty (scry, 479, $0.29) -
+Selesnya Sanctuary (bounce, 539, $0.26) - Scattered Groves (cycling, 962, $0.27)
+- Arctic Treeline / Arctic Flats (snow) - Restless Prairie / Stirring Wildwood
+(creature) - Blossoming Sands / Graypelt Refuge (gain) - Saltcrusted Steppe
+(storage) - Creosote Heath, Conservatory, Botanical Plaza (tapped utility).
+
+### Filler (T3)
+
+12 lands: Riftstone Portal (unique, $2.68), plain taplands (Radiant Grove,
+Thornglint Bridge, ...), Selesnya Guildgate, Veldt (depletion), Tranquil Garden
+/ Vec Townships (locked).
+
+---
+
+## Orzhov (WB)
+
+38 pair-specific lands + 133 any-color. Silent Clearing (Horizon) and the
+verge/pathway pair anchor the premium block alongside the shock.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Scrubland | 386 | RL |
+| Bond | Vault of Champions | 169 | $17.74 |
+| Shock | Godless Shrine | 60 | $9.81 |
+| Verge | Bleachbone Verge | 912 | $10.66 |
+| Verge | Tainted Field | 421 | $0.34 |
+| Pathway | Brightclimb Pathway // Grimclimb Pathway | 746 | $5.81 |
+| Slow | Shattered Sanctum | 295 | $1.51 |
+| Horizon | Silent Clearing | 1601 | $6.77 |
+| Pain | Caves of Koilos | 125 | $0.49 |
+| Pain | Salt Flats | 20053 | RL |
+| Fast | Concealed Courtyard | 1146 | $1.24 |
+| Filter | Fetid Heath | 350 | $0.38 |
+| Filter | Desolate Mire | 960 | $0.27 |
+| Check | Isolated Chapel | 93 | $0.34 |
+| Reveal | Shineshadow Snarl | 420 | $0.33 |
+| MDFC | Glasswing Grace // Age-Graced Chapel | 2843 | $0.37 |
+| Battle | Eclipsed Steppe | 6594 | $2.68 |
+
+### Enters tapped, with upside (T2)
+
+Shadowy Backstreet (surveil, edh561, $12.31) - Orzhov Basilica (bounce, 378,
+$0.31) - Restless Fortress / Shambling Vent (creature) - Snowfield Sinkhole
+(snow) - Temple of Silence (scry, 275, $0.22) - Scoured Barrens (gain) - Umbral
+Expanse (cycling) - Turbulent Moor, Forlorn Flats, Ballroom (tapped utility).
+
+### Filler (T3)
+
+7 lands: plain taplands (Goldmire Bridge, Sunlit Marsh, ...) and Orzhov
+Guildgate.
+
+---
+
+## Izzet (UR)
+
+37 pair-specific lands + 133 any-color. Riverpyre Verge is the priciest verge in
+the set; Fiery Islet (Horizon) and Spirebluff Canal round out the spells-matter
+manabase.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Volcanic Island | 346 | RL |
+| Shock | Steam Vents | 67 | $12.45 |
+| Bond | Training Center | 149 | $16.37 |
+| Verge | Riverpyre Verge | 1022 | $24.02 |
+| Horizon | Fiery Islet | 816 | $6.03 |
+| Slow | Stormcarved Coast | 204 | $2.27 |
+| Pathway | Riverglide Pathway // Lavaglide Pathway | 846 | $5.69 |
+| Fast | Spirebluff Canal | 1572 | $5.91 |
+| Filter | Cascade Bluffs | 313 | $0.39 |
+| Filter | Ferrous Lake | 778 | $0.36 |
+| Pain | Shivan Reef | 117 | $0.35 |
+| Pain | Caldera Lake | 19763 | RL |
+| Check | Sulfur Falls | 83 | $0.34 |
+| Reveal | Frostboil Snarl | 344 | $0.26 |
+| Battle | Scorched Geyser | 7270 | $2.77 |
+| MDFC | Rush of Inspiration // Crackling Falls | 4955 | $0.30 |
+
+### Enters tapped, with upside (T2)
+
+Thundering Falls (surveil, edh626, $16.06) - Izzet Boilerworks (bounce, 393,
+$0.36) - Volatile Fjord (snow) - Temple of Epiphany (scry, 270, $0.16) -
+Swiftwater Cliffs (gain) - Coastal Peak (cycling) - Restless Spire / Wandering
+Fumarole (creature) - Turbulent Springs, Eroded Canyon, Library (tapped
+utility).
+
+### Filler (T3)
+
+7 lands: plain taplands (Silverbluff Bridge, Molten Tributary, ...) and Izzet
+Guildgate.
+
+---
+
+## Golgari (BG)
+
+39 pair-specific lands + 133 any-color. The deepest T1 in the set (17 entries),
+with Nurturing Peatland (Horizon) and a strong reveal pair.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Bayou | 431 | RL |
+| Shock | Overgrown Tomb | 70 | $9.67 |
+| Bond | Undergrowth Stadium | 175 | $5.77 |
+| Verge | Wastewood Verge | 1126 | $11.57 |
+| Verge | Tainted Wood | 424 | $0.32 |
+| Pathway | Darkbore Pathway // Slitherbore Pathway | 1113 | $6.45 |
+| Slow | Deathcap Glade | 399 | $1.36 |
+| Horizon | Nurturing Peatland | 1542 | $6.86 |
+| Pain | Llanowar Wastes | 137 | $0.51 |
+| Pain | Pine Barrens | 20737 | RL |
+| Check | Woodland Cemetery | 114 | $0.39 |
+| MDFC | Revitalizing Repast // Old-Growth Grove | 739 | $0.94 |
+| Filter | Twilight Mire | 383 | $0.44 |
+| Filter | Viridescent Bog | 729 | $0.35 |
+| Fast | Blooming Marsh | 1497 | $1.70 |
+| Battle | Vernal Fen | 987 | $0.50 |
+| Reveal | Necroblossom Snarl | 533 | $0.37 |
+| Reveal | Gilt-Leaf Palace | 5001 | $10.44 |
+
+### Enters tapped, with upside (T2)
+
+Underground Mortuary (surveil, edh470, $16.51) - Golgari Rot Farm (bounce, 315,
+$0.33) - Restless Cottage / Hissing Quagmire (creature) - Woodland Chasm (snow)
+- Temple of Malady (scry, 343, $0.20) - Festering Thicket (cycling) - Jungle
+Hollow (gain) - Turbulent Fen, Festering Gulch, Lounge (tapped utility).
+
+### Filler (T3)
+
+7 lands: plain taplands (Haunted Mire, Darkmoss Bridge, ...) and Golgari
+Guildgate.
+
+---
+
+## Boros (RW)
+
+38 pair-specific lands + 133 any-color. Sunbaked Canyon (Horizon) and the verge
+join the shock at the top; deep, mostly cheap T1.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Plateau | 456 | RL |
+| Shock | Sacred Foundry | 78 | $11.50 |
+| Bond | Spectator Seating | 171 | $16.82 |
+| Verge | Sunbillow Verge | 968 | $11.25 |
+| Pathway | Needleverge Pathway // Pillarverge Pathway | 843 | $5.03 |
+| Slow | Sundown Pass | 292 | $1.52 |
+| Horizon | Sunbaked Canyon | 1474 | $4.06 |
+| Fast | Inspiring Vantage | 1465 | $1.36 |
+| Battle | Radiant Summit | 1617 | $0.86 |
+| Check | Clifftop Retreat | 84 | $0.32 |
+| MDFC | Legion Leadership // Legion Stronghold | 1211 | $0.42 |
+| Filter | Sunscorched Divide | 858 | $0.34 |
+| Filter | Rugged Prairie | 296 | $0.30 |
+| Pain | Battlefield Forge | 123 | $0.26 |
+| Pain | Scabland | 21111 | RL |
+| Reveal | Furycalm Snarl | 349 | $0.26 |
+| Reveal | Ancient Amphitheater | 11357 | $0.46 |
+
+### Enters tapped, with upside (T2)
+
+Elegant Parlor (surveil, edh776, $11.30) - Boros Garrison (bounce, 461, $0.20) -
+Temple of Triumph (scry, 288, $0.20) - Restless Bivouac / Needle Spires
+(creature) - Alpine Meadow (snow) - Glittering Massif (cycling) - Wind-Scarred
+Crag (gain) - Turbulent Steppe, Abraded Bluffs, Hall (tapped utility).
+
+### Filler (T3)
+
+7 lands: plain taplands (Rustvale Bridge, Sacred Peaks, ...) and Boros Guildgate.
+
+---
+
+## Simic (GU)
+
+38 pair-specific lands + 133 any-color. Breeding Pool leads; Waterlogged Grove
+(Horizon) and the slow/fast pair fill out a cheap, deep manabase.
+
+### Untapped & conditional (T0-T1)
+
+| Cycle | Card | EDHREC | Price |
+|---|---|---|---|
+| True dual | Tropical Island | 363 | RL |
+| Shock | Breeding Pool | 63 | $11.87 |
+| Bond | Rejuvenating Springs | 143 | $8.81 |
+| Verge | Willowrush Verge | 1186 | $8.19 |
+| Pathway | Barkchannel Pathway // Tidechannel Pathway | 1073 | $4.17 |
+| Slow | Dreamroot Cascade | 181 | $0.61 |
+| Horizon | Waterlogged Grove | 1100 | $1.81 |
+| Pain | Yavimaya Coast | 134 | $0.37 |
+| Pain | Skyshroud Forest | 21318 | RL |
+| Fast | Botanical Sanctum | 1660 | $1.50 |
+| Check | Hinterland Harbor | 100 | $0.32 |
+| Filter | Flooded Grove | 309 | $0.34 |
+| Filter | Overflowing Basin | 715 | $0.22 |
+| Battle | Sodden Verdure | 2194 | $0.45 |
+| Reveal | Vineglimmer Snarl | 537 | $0.24 |
+| MDFC | Balamb Garden, SeeD Academy // Balamb Garden, Airborne | 6740 | $0.36 |
+| MDFC | Drowner of Truth // Drowned Jungle | 5701 | $0.24 |
+
+### Enters tapped, with upside (T2)
+
+Hedge Maze (surveil, edh543, $12.97) - Simic Growth Chamber (bounce, 281, $0.30)
+- Rimewood Falls (snow) - Temple of Mystery (scry, 297, $0.23) - Restless
+Vinestalk / Lumbering Falls (creature) - Thornwood Falls (gain) - Rain-Slicked
+Copse (cycling) - Turbulent Wilderness, Kitchen, Lush Oasis (tapped utility).
+
+### Filler (T3)
+
+7 lands: plain taplands (Tangled Islet, Tanglepool Bridge, ...) and Simic
+Guildgate.
