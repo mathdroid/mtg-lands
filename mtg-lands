@@ -34,9 +34,9 @@ import time
 
 SCRY_BIN = os.environ.get("SCRY_BIN", "scry")
 
-# Self-throttle across scry subprocesses so batch runs (--all-pairs /
-# --all-triples) stay well under Scryfall's 10 req/s ceiling.
-_MIN_INTERVAL = 0.3
+# Small courtesy gap between scry calls so batch runs don't burst. scry itself
+# backs off and retries on a 429, so this only has to avoid the obvious bursts.
+_MIN_INTERVAL = 0.1
 _last_call = [0.0]
 
 WUBRG = "wubrg"
