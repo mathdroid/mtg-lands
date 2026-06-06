@@ -197,56 +197,72 @@ def is_rainbow(text, c):
     return False
 
 
+# Each entry: (tier, name, predicate(name_lower, text_lower, type_lower, card)).
+# First match wins, so specific/named cycles come before generic ones. Named
+# cycles (Verge, Campus, Triome, Pathway, Guildgate, Bridge, Temple, Tainted)
+# are matched by card name, which is far more reliable than text heuristics and
+# avoids over-matching look-alikes (e.g. Nimbus Maze is not a Verge).
 CYCLES = [
     # --- generic / rainbow (any-color), handled in its own section ---
-    ("G", "Rainbow (any color)", lambda t, tl, c: is_rainbow(t, c)),
+    ("G", "Rainbow (any color)", lambda n, t, tl, c: is_rainbow(t, c)),
 
     # --- multi-card / triland ---
-    ("T1", "Triland", lambda t, tl, c: len(produced(c)) == 3 and not is_rainbow(t, c)),
-    ("T1", "Pathway (MDFC)", lambda t, tl, c: is_dfc(c) and both_faces_land(c)),
-    ("T1", "MDFC spell/land", lambda t, tl, c: is_dfc(c) and not both_faces_land(c)),
+    ("T1", "Triland", lambda n, t, tl, c: len(produced(c)) == 3 and not is_rainbow(t, c)),
+    ("T1", "Pathway (MDFC)", lambda n, t, tl, c: "pathway" in n or (is_dfc(c) and both_faces_land(c))),
+    ("T1", "MDFC spell/land", lambda n, t, tl, c: is_dfc(c) and not both_faces_land(c)),
+
+    # --- named cycles (by card name) ---
+    ("T1", "Verge", lambda n, t, tl, c: n.endswith(" verge")),
+    ("T2", "Tainted", lambda n, t, tl, c: n.startswith("tainted ")),
+    ("T3", "Campus", lambda n, t, tl, c: n.endswith(" campus")),
+    ("T3", "Guildgate", lambda n, t, tl, c: "guildgate" in n
+        or ("gate" in tl and "enters tapped" in t and len(t) < 120)),
 
     # --- T0: unconditional true dual ---
-    ("T0", "True dual (ABUR)", lambda t, tl, c: (
+    ("T0", "True dual (ABUR)", lambda n, t, tl, c: (
         len(basic_types_in(tl)) >= 2
         and not any(k in t for k in (
-            "enters tapped", "pay", "damage", "gain", "unless",
+            "enters tapped", "pay", "damage", "gain", "unless", "cycling",
             "sacrifice", "reveal", "counter", "scry", "surveil")))),
 
     # --- T1: premium untapped / conditionally untapped ---
-    ("T1", "Shock", lambda t, tl, c: len(basic_types_in(tl)) >= 2 and "pay 2 life" in t),
-    ("T1", "Battle/Tango", lambda t, tl, c: "unless you control two or more basic lands" in t),
-    ("T1", "Check", lambda t, tl, c: (
+    ("T1", "Shock", lambda n, t, tl, c: len(basic_types_in(tl)) >= 2 and "pay 2 life" in t),
+    ("T1", "Battle/Tango", lambda n, t, tl, c: "two or more basic lands" in t),
+    ("T1", "Check", lambda n, t, tl, c: (
         "enters tapped unless you control a" in t
         and any(w in t for w in BASIC_WORDS))),
-    ("T1", "Fast", lambda t, tl, c: "unless you control two or fewer other lands" in t),
-    ("T1", "Slow", lambda t, tl, c: "unless you control two or more other lands" in t),
-    ("T1", "Pain", lambda t, tl, c: "deals 1 damage to you" in t and "add {c}" in t),
-    ("T1", "Filter", lambda t, tl, c: has_filter(t, c)),
-    ("T1", "Verge", lambda t, tl, c: (
-        "activate only if you control a" in t and any(w in t for w in BASIC_WORDS)
-        and "enters tapped" not in t and "becomes" not in t)),
-    ("T1", "Bond (crowd)", lambda t, tl, c: "two or more opponents" in t),
-    ("T1", "Horizon/Canopy", lambda t, tl, c: "pay 1 life: add" in t and "draw a card" in t),
-    ("T1", "Reverse-pain", lambda t, tl, c: "each opponent gains 1 life" in t),
-    ("T1", "Reveal", lambda t, tl, c: "you may reveal a" in t and "enters tapped" in t),
+    ("T1", "Fast", lambda n, t, tl, c: "two or fewer other lands" in t),
+    ("T1", "Slow", lambda n, t, tl, c: "two or more other lands" in t),
+    ("T1", "Pain", lambda n, t, tl, c: "deals 1 damage to you" in t and "add {c}" in t),
+    ("T1", "Filter", lambda n, t, tl, c: has_filter(t, c)),
+    ("T1", "Bond (crowd)", lambda n, t, tl, c: "two or more opponents" in t),
+    ("T1", "Horizon/Canopy", lambda n, t, tl, c: "pay 1 life" in t and "draw a card" in t and "sacrifice" in t),
+    ("T1", "Reverse-pain", lambda n, t, tl, c: "each opponent gains 1 life" in t),
+    ("T1", "Reveal", lambda n, t, tl, c: "you may reveal a" in t
+        and any(w in t for w in BASIC_WORDS) and "enters tapped" in t),
 
     # --- T2: enters tapped, with upside ---
-    ("T2", "Creature land", lambda t, tl, c: "becomes a" in t and "creature" in t),
-    ("T2", "Bounce/Karoo", lambda t, tl, c: "return a land you control to its owner" in t),
-    ("T2", "Scry/Temple", lambda t, tl, c: "enters tapped" in t and "scry 1" in t),
-    ("T2", "Surveil", lambda t, tl, c: "enters tapped" in t and "surveil" in t),
-    ("T2", "Gain/Refuge", lambda t, tl, c: "enters tapped" in t and "gain 1 life" in t),
-    ("T2", "Cycling/Bicycle", lambda t, tl, c: "cycling" in t and len(basic_types_in(tl)) >= 2),
-    ("T2", "Snow dual", lambda t, tl, c: "snow" in tl),
-    ("T2", "Storage", lambda t, tl, c: "storage counter" in t),
+    # Surveil land = MKM dual with basic land types + on-enter surveil (strong),
+    # distinct from the weak Campus lands' {4},{T}: Surveil ability.
+    ("T2", "Surveil land", lambda n, t, tl, c: len(basic_types_in(tl)) >= 2
+        and "surveil" in t and "enters tapped" in t),
+    # Scry/Temple = Theros Temples: on-enter scry (not the Campus {4},{T}: Scry).
+    ("T2", "Scry/Temple", lambda n, t, tl, c: n.startswith("temple of")
+        or "when this land enters, scry 1" in t),
+    ("T2", "Creature land", lambda n, t, tl, c: "becomes a" in t and "creature" in t),
+    ("T2", "Bounce/Karoo", lambda n, t, tl, c: "return a land you control to its owner" in t),
+    ("T2", "Gain/Refuge", lambda n, t, tl, c: "enters tapped" in t and "gain 1 life" in t),
+    ("T2", "Cycling/Bicycle", lambda n, t, tl, c: "cycling" in t and len(basic_types_in(tl)) >= 2),
+    ("T2", "Snow dual", lambda n, t, tl, c: "snow" in tl),
+    ("T2", "Catch-up", lambda n, t, tl, c: "unless your opponents control" in t),
 
     # --- T3: plain tapped / weak ---
-    ("T3", "Depletion", lambda t, tl, c: "depletion counter" in t),
-    ("T3", "Locked", lambda t, tl, c: "doesn't untap during your" in t),
-    ("T3", "Guildgate", lambda t, tl, c: "gate" in tl),
-    ("T2", "Tapped utility", lambda t, tl, c: "enters tapped" in t and len(t) > 90),
-    ("T3", "Plain tapland", lambda t, tl, c: "enters tapped" in t),
+    ("T3", "Bridge (artifact)", lambda n, t, tl, c: n.endswith(" bridge")),
+    ("T3", "Storage", lambda n, t, tl, c: "storage counter" in t),
+    ("T3", "Depletion", lambda n, t, tl, c: "depletion counter" in t),
+    ("T3", "Locked", lambda n, t, tl, c: "doesn't untap during your" in t),
+    ("T3", "Tapped utility", lambda n, t, tl, c: "enters tapped" in t and len(t) > 80),
+    ("T3", "Plain tapland", lambda n, t, tl, c: "enters tapped" in t),
 ]
 
 TIER_RANK = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "G": 4}
@@ -260,11 +276,12 @@ TIER_LABEL = {
 
 
 def classify(c):
+    n = c.get("name", "").lower()
     t = oracle(c).lower()
     tl = type_line(c).lower()
     for tier, name, pred in CYCLES:
         try:
-            if pred(t, tl, c):
+            if pred(n, t, tl, c):
                 return tier, name
         except Exception:
             continue

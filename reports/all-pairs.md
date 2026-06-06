@@ -10,10 +10,17 @@ by cycle. Within a cycle they are ordered best-first by a combined score
 
 - **T0** true dual: untapped, no drawback, has basic land types.
 - **T1** untapped or conditionally untapped (shock, check, fast, pain, filter,
-  verge, bond, pathway, slow, battle, horizon, reveal).
-- **T2** enters tapped but pays you back (scry, surveil, creature land, bounce,
-  gain, cycling, snow).
-- **T3** plain tapped or weak. Summarized here; see the JSON for the full list.
+  verge, bond, pathway, slow, battle, horizon, reveal, MDFC).
+- **T2** enters tapped but pays you back (surveil land, scry/temple, creature
+  land, bounce, gain, cycling, snow, tainted, catch-up).
+- **T3** plain tapped or weak (campus, bridge, guildgate, storage, depletion,
+  locked, plain taplands). Summarized here; see the JSON for the full list.
+
+Named cycles (Verge, Tainted, Campus, Bridge, Pathway, Guildgate, Triome, the
+Theros Temples) are matched by card name, so look-alikes are not swept in:
+Nimbus Maze is not a Verge, and the MKM **surveil lands** (basic land types,
+surveil on enter, strong) are kept apart from the weak **Campus** lands whose
+only surveil/scry is a `{4},{T}` ability.
 
 Prices marked **RL** are Reserved List duals with no current nonfoil price on
 Scryfall (they are expensive, not free); the score falls back to play rate.
@@ -43,9 +50,6 @@ see the `G`-tier entries in [`all-pairs.json`](all-pairs.json).
 
 ## Azorius (WU)
 
-43 pair-specific lands + 132 any-color. Premium block runs Tundra into the
-shock/check/pain trio; Sea of Clouds is the standout if you have 2+ opponents.
-
 ### Untapped & conditional (T0-T1)
 
 | Cycle | Card | EDHREC | Price |
@@ -55,7 +59,6 @@ shock/check/pain trio; Sea of Clouds is the standout if you have 2+ opponents.
 | Shock | Hallowed Fountain | 65 | $8.20 |
 | Slow | Deserted Beach | 277 | $5.20 |
 | Verge | Floodfarm Verge | 714 | $8.36 |
-| Verge | Nimbus Maze | 1849 | $6.80 |
 | Filter | Mystic Gate | 896 | $4.00 |
 | Filter | Skycloud Expanse | 348 | $0.20 |
 | Pathway | Hengegate Pathway // Mistgate Pathway | 1152 | $5.11 |
@@ -64,30 +67,27 @@ shock/check/pain trio; Sea of Clouds is the standout if you have 2+ opponents.
 | Battle | Prairie Stream | 106 | $0.30 |
 | Fast | Seachrome Coast | 1212 | $0.36 |
 | Reveal | Port Town | 345 | $0.23 |
-| Reveal | Wanderwine Hub | 13980 | $1.76 |
-| Reveal | Fortified Beachhead | 12168 | $0.24 |
 | MDFC | Suppression Ray // Orderly Plaza | 7151 | $0.30 |
 
 ### Enters tapped, with upside (T2)
 
-Meticulous Archive (surveil, edh703, $11.68) - Temple of Enlightenment (scry,
-303, $0.29) - Restless Anchorage (creature, 3799, $1.13) - Celestial Colonnade
-(creature, 5504, $0.58) - Azorius Chancery (bounce, 436, $0.27) - Irrigated
-Farmland (cycling, 804, $0.23) - Sejiri Refuge / Tranquil Cove (gain) - Glacial
-Floodplain / Boreal Shelf (snow) - Calciform Pools (storage) - University
-Campus, Study, Lonely Arroyo, Skybridge Towers (tapped utility).
+Meticulous Archive (surveil land, edh703, $11.68) - Temple of Enlightenment
+(scry, 303, $0.29) - Restless Anchorage / Celestial Colonnade (creature) -
+Azorius Chancery (bounce, 436, $0.27) - Irrigated Farmland (cycling, 804, $0.23)
+- Sejiri Refuge / Tranquil Cove (gain) - Glacial Floodplain / Boreal Shelf
+(snow).
 
 ### Filler (T3)
 
-11 lands: plain taplands (Razortide Bridge, Idyllic Beachfront, ...), Azorius
-Guildgate, Land Cap (depletion), Cloudcrest Lake / Thalakos Lowlands (locked).
+**Nimbus Maze** (edh1849, $6.80) is a notable untapped one-off: taps {C} freely,
+W/U conditionally. Otherwise: University Campus, Razortide Bridge, Azorius
+Guildgate, Land Cap (depletion), Calciform Pools (storage), Cloudcrest Lake /
+Thalakos Lowlands (locked), plain taplands, and tribal-reveal / utility taplands
+(Wanderwine Hub, Fortified Beachhead, Study, ...).
 
 ---
 
 ## Dimir (UB)
-
-43 pair-specific lands + 132 any-color. Deep premium pool: shock, check, fast,
-pain, filter, verge all cheap-to-mid and heavily played.
 
 ### Untapped & conditional (T0-T1)
 
@@ -99,7 +99,6 @@ pain, filter, verge all cheap-to-mid and heavily played.
 | Slow | Shipwreck Marsh | 231 | $7.47 |
 | Check | Drowned Catacomb | 111 | $3.43 |
 | Verge | Gloomlake Verge | 634 | $11.08 |
-| Verge | Tainted Isle | 496 | $0.75 |
 | Filter | Sunken Ruins | 1048 | $9.12 |
 | Filter | Darkwater Catacombs | 312 | $0.33 |
 | Pain | Underground River | 152 | $1.48 |
@@ -107,29 +106,26 @@ pain, filter, verge all cheap-to-mid and heavily played.
 | Battle | Sunken Hollow | 86 | $0.39 |
 | Fast | Darkslick Shores | 1366 | $2.19 |
 | Reveal | Choked Estuary | 289 | $0.38 |
-| Reveal | Secluded Glen | 4907 | $3.67 |
 | MDFC | Waterlogged Teachings // Inundated Archive | 1385 | $0.40 |
 
 ### Enters tapped, with upside (T2)
 
-Undercity Sewers (surveil, edh434, $17.82) - Dimir Aqueduct (bounce, 339, $0.37)
+Undercity Sewers (surveil land, edh434, $17.82) - **Tainted Isle** (496, $0.75;
+untapped {C}, U/B if you control a Swamp) - Dimir Aqueduct (bounce, 339, $0.37)
 - Restless Reef / Creeping Tar Pit (creature) - Fetid Pools (cycling, 861,
 $0.32) - Temple of Deceit (scry, 330, $0.25) - Ice Tunnel / Frost Marsh (snow) -
-Jwar Isle Refuge / Dismal Backwater (gain) - Dreadship Reef (storage) -
-Waterfront District, Secret Passage, Soured Springs (tapped utility).
+Jwar Isle Refuge / Dismal Backwater (gain).
 
 ### Filler (T3)
 
-12 lands: plain taplands (Mistvault Bridge, Contaminated Aquifer, ...), River of
-Tears (unique), Dimir Guildgate, River Delta (depletion), Waterveil Cavern /
-Rootwater Depths (locked).
+River of Tears (unique; U, or B if you played a land), Mistvault Bridge, Dimir
+Guildgate, River Delta (depletion), Dreadship Reef (storage), Waterveil Cavern /
+Rootwater Depths (locked), plain taplands, and utility taplands (Secluded Glen,
+Secret Passage, ...).
 
 ---
 
 ## Rakdos (BR)
-
-42 pair-specific lands + 133 any-color. Strong T1; note Mount Doom sits in T3 as
-a one-off but is a pricey, playable utility land.
 
 ### Untapped & conditional (T0-T1)
 
@@ -140,7 +136,6 @@ a one-off but is a pricey, playable utility land.
 | Shock | Blood Crypt | 69 | $9.91 |
 | Slow | Haunted Ridge | 276 | $7.92 |
 | Verge | Blazemire Verge | 568 | $8.81 |
-| Verge | Tainted Peak | 500 | $0.48 |
 | Pain | Sulfurous Springs | 158 | $1.06 |
 | Pathway | Blightstep Pathway // Searstep Pathway | 813 | $5.51 |
 | Filter | Graven Cairns | 584 | $3.50 |
@@ -149,30 +144,28 @@ a one-off but is a pricey, playable utility land.
 | Fast | Blackcleave Cliffs | 1067 | $1.40 |
 | Battle | Smoldering Marsh | 95 | $0.34 |
 | Reveal | Foreboding Ruins | 326 | $0.33 |
-| Reveal | Auntie's Hovel | 11039 | $7.47 |
 
 ### Enters tapped, with upside (T2)
 
-Raucous Theater (surveil, edh562, $11.40) - Rakdos Carnarium (bounce, 476,
-$0.35) - Temple of Malice (scry, 415, $0.26) - Restless Vents / Lavaclaw Reaches
-(creature) - Canyon Slough (cycling, 702, $0.23) - Akoum Refuge / Bloodfell
-Caves (gain) - Sulfurous Mire / Tresserhorn Sinks (snow) - Molten Slagheap
-(storage) - Jagged Barrens, Billiard Room, Tramway Station (tapped utility).
+Raucous Theater (surveil land, edh562, $11.40) - **Tainted Peak** (500, $0.48) -
+Rakdos Carnarium (bounce, 476, $0.35) - Temple of Malice (scry, 415, $0.26) -
+Restless Vents / Lavaclaw Reaches (creature) - Akoum Refuge / Bloodfell Caves
+(gain) - Canyon Slough (cycling, 702, $0.23) - Sulfurous Mire / Tresserhorn
+Sinks (snow).
 
 ### Filler (T3)
 
-12 lands: Mount Doom (unique, $7.96), plain taplands (Drossforge Bridge,
-Geothermal Bog, ...), Rakdos Guildgate, Lava Tubes (depletion), Lantern-Lit
-Graveyard / Cinder Marsh (locked).
+Mount Doom (unique, $7.96), Drossforge Bridge, Rakdos Guildgate, Lava Tubes
+(depletion), Molten Slagheap (storage), Lantern-Lit Graveyard / Cinder Marsh
+(locked), plain taplands, and utility taplands (Auntie's Hovel, Jagged Barrens,
+...).
 
 ---
 
 ## Gruul (RG)
 
-41 pair-specific lands + 132 any-color. Taiga is the only land in the field with
-literally no drawback; after that the shock/check/fast/pain group is the
-backbone. Gruul has a Reverse-pain entry (Grove of the Burnwillows) that the
-other guilds lack here.
+Taiga is the only land in the field with literally no drawback. Gruul uniquely
+has a Reverse-pain land (Grove of the Burnwillows).
 
 ### Untapped & conditional (T0-T1)
 
@@ -196,24 +189,20 @@ other guilds lack here.
 
 ### Enters tapped, with upside (T2)
 
-Commercial District (surveil, edh644, $8.38) - Gruul Turf (bounce, 413, $0.29) -
-Temple of Abandon (scry, 484, $0.26) - Highland Forest / Highland Weald (snow) -
-Sheltered Thicket (cycling, 625, $0.25) - Restless Ridgeline / Raging Ravine
-(creature) - Rugged Highlands / Kazandu Refuge (gain) - Fungal Reaches (storage)
-- Bristling Backwoods, Dining Room, Racers' Ring (tapped utility).
+Commercial District (surveil land, edh644, $8.38) - Gruul Turf (bounce, 413,
+$0.29) - Temple of Abandon (scry, 484, $0.26) - Highland Forest / Highland Weald
+(snow) - Sheltered Thicket (cycling, 625, $0.25) - Restless Ridgeline / Raging
+Ravine (creature) - Rugged Highlands / Kazandu Refuge (gain).
 
 ### Filler (T3)
 
-11 lands: plain taplands (Wooded Ridgeline, Slagwoods Bridge, ...), Gruul
-Guildgate, Timberline Ridge (depletion), Pinecrest Ridge / Mogg Hollows
-(locked).
+Slagwoods Bridge, Gruul Guildgate, Timberline Ridge (depletion), Fungal Reaches
+(storage), Pinecrest Ridge / Mogg Hollows (locked), plain taplands (Wooded
+Ridgeline, ...), and utility taplands (Bristling Backwoods, Dining Room, ...).
 
 ---
 
 ## Selesnya (GW)
-
-42 pair-specific lands + 132 any-color. Horizon Canopy joins the premium block;
-Wooded Bastion is a pricey filter.
 
 ### Untapped & conditional (T0-T1)
 
@@ -237,24 +226,20 @@ Wooded Bastion is a pricey filter.
 
 ### Enters tapped, with upside (T2)
 
-Lush Portico (surveil, edh709, $5.83) - Temple of Plenty (scry, 479, $0.29) -
-Selesnya Sanctuary (bounce, 539, $0.26) - Scattered Groves (cycling, 962, $0.27)
-- Arctic Treeline / Arctic Flats (snow) - Restless Prairie / Stirring Wildwood
-(creature) - Blossoming Sands / Graypelt Refuge (gain) - Saltcrusted Steppe
-(storage) - Creosote Heath, Conservatory, Botanical Plaza (tapped utility).
+Lush Portico (surveil land, edh709, $5.83) - Temple of Plenty (scry, 479, $0.29)
+- Selesnya Sanctuary (bounce, 539, $0.26) - Scattered Groves (cycling, 962,
+$0.27) - Arctic Treeline / Arctic Flats (snow) - Restless Prairie / Stirring
+Wildwood (creature) - Blossoming Sands / Graypelt Refuge (gain).
 
 ### Filler (T3)
 
-12 lands: Riftstone Portal (unique, $2.68), plain taplands (Radiant Grove,
-Thornglint Bridge, ...), Selesnya Guildgate, Veldt (depletion), Tranquil Garden
-/ Vec Townships (locked).
+Riftstone Portal (unique; {C}, plus a graveyard fixing ability), Thornglint
+Bridge, Selesnya Guildgate, Veldt (depletion), Saltcrusted Steppe (storage),
+Tranquil Garden / Vec Townships (locked), plain taplands, and utility taplands.
 
 ---
 
 ## Orzhov (WB)
-
-38 pair-specific lands + 133 any-color. Silent Clearing (Horizon) and the
-verge/pathway pair anchor the premium block alongside the shock.
 
 ### Untapped & conditional (T0-T1)
 
@@ -264,7 +249,6 @@ verge/pathway pair anchor the premium block alongside the shock.
 | Bond | Vault of Champions | 169 | $17.74 |
 | Shock | Godless Shrine | 60 | $9.81 |
 | Verge | Bleachbone Verge | 912 | $10.66 |
-| Verge | Tainted Field | 421 | $0.34 |
 | Pathway | Brightclimb Pathway // Grimclimb Pathway | 746 | $5.81 |
 | Slow | Shattered Sanctum | 295 | $1.51 |
 | Horizon | Silent Clearing | 1601 | $6.77 |
@@ -280,23 +264,20 @@ verge/pathway pair anchor the premium block alongside the shock.
 
 ### Enters tapped, with upside (T2)
 
-Shadowy Backstreet (surveil, edh561, $12.31) - Orzhov Basilica (bounce, 378,
-$0.31) - Restless Fortress / Shambling Vent (creature) - Snowfield Sinkhole
-(snow) - Temple of Silence (scry, 275, $0.22) - Scoured Barrens (gain) - Umbral
-Expanse (cycling) - Turbulent Moor, Forlorn Flats, Ballroom (tapped utility).
+Shadowy Backstreet (surveil land, edh561, $12.31) - **Tainted Field** (421,
+$0.34) - Orzhov Basilica (bounce, 378, $0.31) - **Turbulent Moor** (catch-up,
+6329, $5.84; untapped if behind on lands) - Restless Fortress / Shambling Vent
+(creature) - Snowfield Sinkhole (snow) - Temple of Silence (scry, 275, $0.22) -
+Scoured Barrens (gain) - Umbral Expanse (cycling).
 
 ### Filler (T3)
 
-7 lands: plain taplands (Goldmire Bridge, Sunlit Marsh, ...) and Orzhov
-Guildgate.
+Silverquill Campus, Goldmire Bridge, Orzhov Guildgate, plain taplands, and
+utility taplands (Ballroom, Forlorn Flats, ...).
 
 ---
 
 ## Izzet (UR)
-
-37 pair-specific lands + 133 any-color. Riverpyre Verge is the priciest verge in
-the set; Fiery Islet (Horizon) and Spirebluff Canal round out the spells-matter
-manabase.
 
 ### Untapped & conditional (T0-T1)
 
@@ -321,23 +302,22 @@ manabase.
 
 ### Enters tapped, with upside (T2)
 
-Thundering Falls (surveil, edh626, $16.06) - Izzet Boilerworks (bounce, 393,
-$0.36) - Volatile Fjord (snow) - Temple of Epiphany (scry, 270, $0.16) -
-Swiftwater Cliffs (gain) - Coastal Peak (cycling) - Restless Spire / Wandering
-Fumarole (creature) - Turbulent Springs, Eroded Canyon, Library (tapped
-utility).
+Thundering Falls (surveil land, edh626, $16.06) - Izzet Boilerworks (bounce,
+393, $0.36) - **Turbulent Springs** (catch-up, 6856, $5.63) - Volatile Fjord
+(snow) - Temple of Epiphany (scry, 270, $0.16) - Swiftwater Cliffs (gain) -
+Coastal Peak (cycling) - Restless Spire / Wandering Fumarole (creature).
 
 ### Filler (T3)
 
-7 lands: plain taplands (Silverbluff Bridge, Molten Tributary, ...) and Izzet
-Guildgate.
+Prismari Campus, Silverbluff Bridge, Izzet Guildgate, plain taplands, and
+utility taplands (Library, Eroded Canyon, ...).
 
 ---
 
 ## Golgari (BG)
 
-39 pair-specific lands + 133 any-color. The deepest T1 in the set (17 entries),
-with Nurturing Peatland (Horizon) and a strong reveal pair.
+The deepest T1 in the set, with Nurturing Peatland (Horizon) and a strong
+filter/check/pathway core.
 
 ### Untapped & conditional (T0-T1)
 
@@ -347,7 +327,6 @@ with Nurturing Peatland (Horizon) and a strong reveal pair.
 | Shock | Overgrown Tomb | 70 | $9.67 |
 | Bond | Undergrowth Stadium | 175 | $5.77 |
 | Verge | Wastewood Verge | 1126 | $11.57 |
-| Verge | Tainted Wood | 424 | $0.32 |
 | Pathway | Darkbore Pathway // Slitherbore Pathway | 1113 | $6.45 |
 | Slow | Deathcap Glade | 399 | $1.36 |
 | Horizon | Nurturing Peatland | 1542 | $6.86 |
@@ -360,26 +339,23 @@ with Nurturing Peatland (Horizon) and a strong reveal pair.
 | Fast | Blooming Marsh | 1497 | $1.70 |
 | Battle | Vernal Fen | 987 | $0.50 |
 | Reveal | Necroblossom Snarl | 533 | $0.37 |
-| Reveal | Gilt-Leaf Palace | 5001 | $10.44 |
 
 ### Enters tapped, with upside (T2)
 
-Underground Mortuary (surveil, edh470, $16.51) - Golgari Rot Farm (bounce, 315,
-$0.33) - Restless Cottage / Hissing Quagmire (creature) - Woodland Chasm (snow)
+Underground Mortuary (surveil land, edh470, $16.51) - Golgari Rot Farm (bounce,
+315, $0.33) - Restless Cottage / Hissing Quagmire (creature) - **Tainted Wood**
+(424, $0.32) - Woodland Chasm (snow) - **Turbulent Fen** (catch-up, 6099, $7.88)
 - Temple of Malady (scry, 343, $0.20) - Festering Thicket (cycling) - Jungle
-Hollow (gain) - Turbulent Fen, Festering Gulch, Lounge (tapped utility).
+Hollow (gain).
 
 ### Filler (T3)
 
-7 lands: plain taplands (Haunted Mire, Darkmoss Bridge, ...) and Golgari
-Guildgate.
+Witherbloom Campus, Darkmoss Bridge, Golgari Guildgate, plain taplands, and
+utility taplands (Gilt-Leaf Palace, Lounge, ...).
 
 ---
 
 ## Boros (RW)
-
-38 pair-specific lands + 133 any-color. Sunbaked Canyon (Horizon) and the verge
-join the shock at the top; deep, mostly cheap T1.
 
 ### Untapped & conditional (T0-T1)
 
@@ -401,25 +377,22 @@ join the shock at the top; deep, mostly cheap T1.
 | Pain | Battlefield Forge | 123 | $0.26 |
 | Pain | Scabland | 21111 | RL |
 | Reveal | Furycalm Snarl | 349 | $0.26 |
-| Reveal | Ancient Amphitheater | 11357 | $0.46 |
 
 ### Enters tapped, with upside (T2)
 
-Elegant Parlor (surveil, edh776, $11.30) - Boros Garrison (bounce, 461, $0.20) -
-Temple of Triumph (scry, 288, $0.20) - Restless Bivouac / Needle Spires
-(creature) - Alpine Meadow (snow) - Glittering Massif (cycling) - Wind-Scarred
-Crag (gain) - Turbulent Steppe, Abraded Bluffs, Hall (tapped utility).
+Elegant Parlor (surveil land, edh776, $11.30) - **Turbulent Steppe** (catch-up,
+7473, $5.23) - Restless Bivouac / Needle Spires (creature) - Temple of Triumph
+(scry, 288, $0.20) - Boros Garrison (bounce, 461, $0.20) - Alpine Meadow (snow) -
+Glittering Massif (cycling) - Wind-Scarred Crag (gain).
 
 ### Filler (T3)
 
-7 lands: plain taplands (Rustvale Bridge, Sacred Peaks, ...) and Boros Guildgate.
+Lorehold Campus, Rustvale Bridge, Boros Guildgate, plain taplands, and utility
+taplands (Ancient Amphitheater, Abraded Bluffs, ...).
 
 ---
 
 ## Simic (GU)
-
-38 pair-specific lands + 133 any-color. Breeding Pool leads; Waterlogged Grove
-(Horizon) and the slow/fast pair fill out a cheap, deep manabase.
 
 ### Untapped & conditional (T0-T1)
 
@@ -445,12 +418,13 @@ Crag (gain) - Turbulent Steppe, Abraded Bluffs, Hall (tapped utility).
 
 ### Enters tapped, with upside (T2)
 
-Hedge Maze (surveil, edh543, $12.97) - Simic Growth Chamber (bounce, 281, $0.30)
-- Rimewood Falls (snow) - Temple of Mystery (scry, 297, $0.23) - Restless
-Vinestalk / Lumbering Falls (creature) - Thornwood Falls (gain) - Rain-Slicked
-Copse (cycling) - Turbulent Wilderness, Kitchen, Lush Oasis (tapped utility).
+Hedge Maze (surveil land, edh543, $12.97) - Simic Growth Chamber (bounce, 281,
+$0.30) - Rimewood Falls (snow) - Temple of Mystery (scry, 297, $0.23) -
+**Turbulent Wilderness** (catch-up, 7229, $6.48) - Restless Vinestalk /
+Lumbering Falls (creature) - Thornwood Falls (gain) - Rain-Slicked Copse
+(cycling).
 
 ### Filler (T3)
 
-7 lands: plain taplands (Tangled Islet, Tanglepool Bridge, ...) and Simic
-Guildgate.
+Quandrix Campus, Tanglepool Bridge, Simic Guildgate, plain taplands, and utility
+taplands (Kitchen, Lush Oasis, ...).

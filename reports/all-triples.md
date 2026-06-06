@@ -13,7 +13,7 @@ For the full per-cycle breakdown of any pair, see that pair's section in
 
 Prices marked **RL** are Reserved List duals with no current nonfoil price.
 Counts at the end of each section are pair/tri-specific lands by tier (the
-~137 any-color rainbow lands every identity shares are excluded).
+~138 any-color rainbow lands every identity shares are excluded).
 
 ---
 
@@ -38,7 +38,7 @@ Union of Azorius (WU), Selesnya (GW), and Simic (GU), plus GWU trilands.
 Bountiful Promenade, Temple Garden, Rejuvenating Springs, Deserted Beach,
 Floodfarm Verge, Hushwood Verge, Overgrown Farmland.
 
-Tiers: T0 3, T1 52, T2 44, T3 30 (129 specific + 137 any-color).
+Tiers: T0 3, T1 49, T2 30, T3 47 (129 specific + 137 any-color).
 
 ---
 
@@ -62,7 +62,7 @@ Union of Azorius (WU), Orzhov (WB), and Dimir (UB), plus WUB trilands.
 Godless Shrine, Vault of Champions, Hallowed Fountain, Shipwreck Marsh, Drowned
 Catacomb, Deserted Beach, Gloomlake Verge.
 
-Tiers: T0 3, T1 52, T2 44, T3 30 (129 specific + 137 any-color).
+Tiers: T0 3, T1 46, T2 32, T3 48 (129 specific + 137 any-color).
 
 ---
 
@@ -88,7 +88,7 @@ Union of Dimir (UB), Izzet (UR), and Rakdos (BR), plus UBR trilands.
 Suite, Training Center, Blood Crypt, Shipwreck Marsh, Haunted Ridge, Drowned
 Catacomb, Gloomlake Verge.
 
-Tiers: T0 3, T1 51, T2 44, T3 31 (129 specific + 138 any-color).
+Tiers: T0 3, T1 47, T2 32, T3 47 (129 specific + 138 any-color).
 
 ---
 
@@ -112,7 +112,7 @@ Union of Rakdos (BR), Golgari (BG), and Gruul (RG), plus BRG trilands.
 Stomping Ground, Haunted Ridge, Undergrowth Stadium, Spire Garden, Blazemire
 Verge, Rockfall Vale, Wastewood Verge.
 
-Tiers: T0 3, T1 50, T2 44, T3 30 (127 specific + 138 any-color).
+Tiers: T0 3, T1 46, T2 32, T3 46 (127 specific + 138 any-color).
 
 ---
 
@@ -136,7 +136,7 @@ Union of Gruul (RG), Boros (RW), and Selesnya (GW), plus RGW trilands.
 Ground, Bountiful Promenade, Temple Garden, Spire Garden, Rockfall Vale,
 Sunbillow Verge, Overgrown Farmland, Hushwood Verge.
 
-Tiers: T0 3, T1 49, T2 44, T3 30 (126 specific + 137 any-color).
+Tiers: T0 3, T1 48, T2 30, T3 45 (126 specific + 137 any-color).
 
 ---
 
@@ -158,7 +158,7 @@ Union of Orzhov (WB), Golgari (BG), and Selesnya (GW), plus WBG trilands.
 Tomb, Bountiful Promenade, Temple Garden, Undergrowth Stadium, Bleachbone Verge,
 Overgrown Farmland, Wastewood Verge, Hushwood Verge.
 
-Tiers: T0 3, T1 50, T2 43, T3 26 (122 specific + 138 any-color).
+Tiers: T0 3, T1 47, T2 32, T3 40 (122 specific + 138 any-color).
 
 ---
 
@@ -179,7 +179,7 @@ Union of Izzet (UR), Boros (RW), and Azorius (WU), plus URW trilands.
 Training Center, Spectator Seating, Hallowed Fountain, Deserted Beach, Riverpyre
 Verge, Floodfarm Verge, Stormcarved Coast.
 
-Tiers: T0 3, T1 49, T2 43, T3 25 (120 specific + 138 any-color).
+Tiers: T0 3, T1 45, T2 30, T3 42 (120 specific + 138 any-color).
 
 ---
 
@@ -200,7 +200,7 @@ Union of Golgari (BG), Simic (GU), and Dimir (UB), plus BGU trilands.
 Overgrown Tomb, Rejuvenating Springs, Shipwreck Marsh, Drowned Catacomb,
 Undergrowth Stadium, Gloomlake Verge, Underground River.
 
-Tiers: T0 3, T1 50, T2 43, T3 26 (122 specific + 138 any-color).
+Tiers: T0 3, T1 46, T2 32, T3 41 (122 specific + 138 any-color).
 
 ---
 
@@ -222,7 +222,7 @@ Union of Boros (RW), Orzhov (WB), and Rakdos (BR), plus RWB trilands.
 Champions, Blood Crypt, Godless Shrine, Spectator Seating, Haunted Ridge,
 Blazemire Verge, Bleachbone Verge, Sulfurous Springs.
 
-Tiers: T0 3, T1 49, T2 43, T3 26 (121 specific + 139 any-color).
+Tiers: T0 3, T1 45, T2 32, T3 41 (121 specific + 139 any-color).
 
 ---
 
@@ -243,4 +243,4 @@ Union of Simic (GU), Izzet (UR), and Gruul (RG), plus GUR trilands.
 Stomping Ground, Rejuvenating Springs, Spire Garden, Riverpyre Verge,
 Stormcarved Coast, Rockfall Vale, Fiery Islet.
 
-Tiers: T0 3, T1 47, T2 43, T3 25 (118 specific + 138 any-color).
+Tiers: T0 3, T1 47, T2 30, T3 38 (118 specific + 138 any-color).
