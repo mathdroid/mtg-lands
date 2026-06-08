@@ -2,17 +2,21 @@
 """
 mtg-lands - classify and rank the dual/fixing lands for any color identity.
 
-Wraps `scry search --json` (the scry CLI). For a color pair it pulls every
-Commander-legal land whose color identity fits the pair and that can produce
-both colors, then sorts each land into a known cycle (true dual, shock, fast,
-check, pain, filter, verge, ...) using color-agnostic oracle-text patterns.
+Wraps `scry search --json` (the scry CLI). For a color identity it pulls every
+Commander-legal land whose color identity fits and that can produce the colors,
+then for each land records:
+  - entry status (untapped / conditional / tapped), read from the oracle text;
+  - cycle (true dual, shock, check, verge, filter, ...), or "-" if it is a
+    one-off / not a recognized named cycle;
+  - tags (searchable, filter, pain, lifegain, manland, MDFC, cycling, snow,
+    scry, surveil, bounce, storage).
 
-Lands are ranked TIER FIRST (fixing quality), then by a popularity+price
-combo within each tier, so an unconditional true dual always lands at the top
-regardless of price-data gaps.
+Output groups the identity-specific lands into three tables by entry status,
+ordered within each by a popularity+price score. Any-color (rainbow) lands tap
+for any color and are listed separately.
 
-A 3-color identity is just the union of its three pairs, which also pulls in
-trilands and rainbow lands.
+A 3-color identity is the union of its three pairs plus a full-triple query,
+which also pulls in trilands.
 
 Usage:
   mtg-lands rg                 # one pair (letters or guild name: rg / gruul)
@@ -34,9 +38,9 @@ import time
 
 SCRY_BIN = os.environ.get("SCRY_BIN", "scry")
 
-# Self-throttle across scry subprocesses so batch runs (--all-pairs /
-# --all-triples) stay well under Scryfall's 10 req/s ceiling.
-_MIN_INTERVAL = 0.3
+# Small courtesy gap between scry calls so batch runs don't burst. scry itself
+# backs off and retries on a 429, so this only has to avoid the obvious bursts.
+_MIN_INTERVAL = 0.1
 _last_call = [0.0]
 
 WUBRG = "wubrg"
@@ -161,9 +165,7 @@ def edhrec(c):
 
 
 # ---------------------------------------------------------------------------
-# Cycle taxonomy. Each entry: (tier, name, predicate). First match wins, so
-# specific cycles come before generic ones. Predicates take (text, tl, c)
-# where `text` is lowercased oracle text, `tl` lowercased type line.
+# Classification: entry status (untapped/conditional/tapped), cycle, and tags.
 # ---------------------------------------------------------------------------
 
 def is_dfc(c):
@@ -197,83 +199,126 @@ def is_rainbow(text, c):
     return False
 
 
+# Recognized land cycles, as (name, predicate(name_lower, text_lower, type_lower,
+# card)). First match wins, so specific/named cycles come before broad ones.
+# Named cycles (Verge, Campus, Triome, Pathway, Guildgate, Bridge, Temple,
+# Tainted) are matched by card name, which is far more reliable than text
+# heuristics and avoids over-matching look-alikes (e.g. Nimbus Maze is not a
+# Verge). Cards that match nothing get cycle "-".
 CYCLES = [
-    # --- generic / rainbow (any-color), handled in its own section ---
-    ("G", "Rainbow (any color)", lambda t, tl, c: is_rainbow(t, c)),
-
-    # --- multi-card / triland ---
-    ("T1", "Triland", lambda t, tl, c: len(produced(c)) == 3 and not is_rainbow(t, c)),
-    ("T1", "Pathway (MDFC)", lambda t, tl, c: is_dfc(c) and both_faces_land(c)),
-    ("T1", "MDFC spell/land", lambda t, tl, c: is_dfc(c) and not both_faces_land(c)),
-
-    # --- T0: unconditional true dual ---
-    ("T0", "True dual (ABUR)", lambda t, tl, c: (
+    ("Triland", lambda n, t, tl, c: len(produced(c)) == 3 and not is_rainbow(t, c)),
+    ("Pathway", lambda n, t, tl, c: "pathway" in n or (is_dfc(c) and both_faces_land(c))),
+    ("MDFC spell/land", lambda n, t, tl, c: is_dfc(c) and not both_faces_land(c)),
+    # named cycles, matched by card name
+    ("Verge", lambda n, t, tl, c: n.endswith(" verge")),
+    ("Tainted", lambda n, t, tl, c: n.startswith("tainted ")),
+    ("Campus", lambda n, t, tl, c: n.endswith(" campus")),
+    ("Guildgate", lambda n, t, tl, c: "guildgate" in n
+        or ("gate" in tl and "enters tapped" in t and len(t) < 120)),
+    ("Bridge", lambda n, t, tl, c: n.endswith(" bridge")),
+    # true dual: basic land types, no drawback text at all
+    ("True dual", lambda n, t, tl, c: (
         len(basic_types_in(tl)) >= 2
         and not any(k in t for k in (
-            "enters tapped", "pay", "damage", "gain", "unless",
+            "enters tapped", "pay", "damage", "gain", "unless", "cycling",
             "sacrifice", "reveal", "counter", "scry", "surveil")))),
-
-    # --- T1: premium untapped / conditionally untapped ---
-    ("T1", "Shock", lambda t, tl, c: len(basic_types_in(tl)) >= 2 and "pay 2 life" in t),
-    ("T1", "Battle/Tango", lambda t, tl, c: "unless you control two or more basic lands" in t),
-    ("T1", "Check", lambda t, tl, c: (
-        "enters tapped unless you control a" in t
-        and any(w in t for w in BASIC_WORDS))),
-    ("T1", "Fast", lambda t, tl, c: "unless you control two or fewer other lands" in t),
-    ("T1", "Slow", lambda t, tl, c: "unless you control two or more other lands" in t),
-    ("T1", "Pain", lambda t, tl, c: "deals 1 damage to you" in t and "add {c}" in t),
-    ("T1", "Filter", lambda t, tl, c: has_filter(t, c)),
-    ("T1", "Verge", lambda t, tl, c: (
-        "activate only if you control a" in t and any(w in t for w in BASIC_WORDS)
-        and "enters tapped" not in t and "becomes" not in t)),
-    ("T1", "Bond (crowd)", lambda t, tl, c: "two or more opponents" in t),
-    ("T1", "Horizon/Canopy", lambda t, tl, c: "pay 1 life: add" in t and "draw a card" in t),
-    ("T1", "Reverse-pain", lambda t, tl, c: "each opponent gains 1 life" in t),
-    ("T1", "Reveal", lambda t, tl, c: "you may reveal a" in t and "enters tapped" in t),
-
-    # --- T2: enters tapped, with upside ---
-    ("T2", "Creature land", lambda t, tl, c: "becomes a" in t and "creature" in t),
-    ("T2", "Bounce/Karoo", lambda t, tl, c: "return a land you control to its owner" in t),
-    ("T2", "Scry/Temple", lambda t, tl, c: "enters tapped" in t and "scry 1" in t),
-    ("T2", "Surveil", lambda t, tl, c: "enters tapped" in t and "surveil" in t),
-    ("T2", "Gain/Refuge", lambda t, tl, c: "enters tapped" in t and "gain 1 life" in t),
-    ("T2", "Cycling/Bicycle", lambda t, tl, c: "cycling" in t and len(basic_types_in(tl)) >= 2),
-    ("T2", "Snow dual", lambda t, tl, c: "snow" in tl),
-    ("T2", "Storage", lambda t, tl, c: "storage counter" in t),
-
-    # --- T3: plain tapped / weak ---
-    ("T3", "Depletion", lambda t, tl, c: "depletion counter" in t),
-    ("T3", "Locked", lambda t, tl, c: "doesn't untap during your" in t),
-    ("T3", "Guildgate", lambda t, tl, c: "gate" in tl),
-    ("T2", "Tapped utility", lambda t, tl, c: "enters tapped" in t and len(t) > 90),
-    ("T3", "Plain tapland", lambda t, tl, c: "enters tapped" in t),
+    ("Shock", lambda n, t, tl, c: len(basic_types_in(tl)) >= 2 and "pay 2 life" in t),
+    ("Battle/Tango", lambda n, t, tl, c: "two or more basic lands" in t),
+    ("Check", lambda n, t, tl, c: "enters tapped unless you control a" in t
+        and any(w in t for w in BASIC_WORDS)),
+    ("Fast", lambda n, t, tl, c: "two or fewer other lands" in t),
+    ("Slow", lambda n, t, tl, c: "two or more other lands" in t),
+    ("Catch-up", lambda n, t, tl, c: "unless your opponents control" in t),
+    ("Pain", lambda n, t, tl, c: "deals 1 damage to you" in t and "add {c}" in t),
+    ("Filter", lambda n, t, tl, c: has_filter(t, c)),
+    ("Bond (crowd)", lambda n, t, tl, c: "two or more opponents" in t),
+    ("Horizon/Canopy", lambda n, t, tl, c: "pay 1 life" in t and "draw a card" in t and "sacrifice" in t),
+    ("Reverse-pain", lambda n, t, tl, c: "each opponent gains 1 life" in t),
+    ("Reveal", lambda n, t, tl, c: "you may reveal a" in t
+        and any(w in t for w in BASIC_WORDS) and "enters tapped" in t),
+    # Surveil land = MKM dual (basic types + on-enter surveil), kept apart from
+    # the weak Campus lands' {4},{T}: Surveil ability.
+    ("Surveil land", lambda n, t, tl, c: len(basic_types_in(tl)) >= 2
+        and "surveil" in t and "enters tapped" in t),
+    # Scry/Temple = Theros Temples: on-enter scry (not Campus' {4},{T}: Scry).
+    ("Scry/Temple", lambda n, t, tl, c: n.startswith("temple of")
+        or "when this land enters, scry 1" in t),
+    ("Creature land", lambda n, t, tl, c: "becomes a" in t and "creature" in t),
+    ("Bounce/Karoo", lambda n, t, tl, c: "return a land you control to its owner" in t),
+    ("Gain/Refuge", lambda n, t, tl, c: "enters tapped" in t and "gain 1 life" in t),
+    ("Cycling/Bicycle", lambda n, t, tl, c: "cycling" in t and len(basic_types_in(tl)) >= 2),
+    ("Snow dual", lambda n, t, tl, c: "snow" in tl),
+    ("Storage", lambda n, t, tl, c: "storage counter" in t),
+    ("Depletion", lambda n, t, tl, c: "depletion counter" in t),
+    ("Locked", lambda n, t, tl, c: "doesn't untap during your" in t),
 ]
-
-TIER_RANK = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "G": 4}
-TIER_LABEL = {
-    "T0": "T0 - True dual (untapped, no drawback)",
-    "T1": "T1 - Untapped / conditionally untapped",
-    "T2": "T2 - Enters tapped, with upside",
-    "T3": "T3 - Plain tapped / weak",
-    "G": "Generic - taps for ANY color (usable outside this identity)",
-}
 
 
 def classify(c):
+    """Return the recognized cycle name, or '-' if none matches."""
+    n = c.get("name", "").lower()
     t = oracle(c).lower()
     tl = type_line(c).lower()
-    for tier, name, pred in CYCLES:
+    for name, pred in CYCLES:
         try:
-            if pred(t, tl, c):
-                return tier, name
+            if pred(n, t, tl, c):
+                return name
         except Exception:
             continue
-    return "T3", "Other"
+    return "-"
+
+
+def entry_status(c):
+    """How the land enters: 'untapped', 'conditional', or 'tapped'.
+
+    Read straight from the oracle text: a land that can enter tapped is
+    'conditional' if it offers a way to enter untapped (pay life / a control
+    condition / reveal), otherwise it is unconditionally 'tapped'.
+    """
+    t = oracle(c).lower()
+    tapped = "enters tapped" in t or "enters the battlefield tapped" in t
+    if not tapped:
+        return "untapped"
+    if ("unless" in t) or ("if you don't" in t) or ("you may pay 2 life" in t):
+        return "conditional"
+    return "tapped"
+
+
+def tags(c):
+    """Orthogonal mechanical tags for a land (independent of cycle)."""
+    t = oracle(c).lower()
+    tl = type_line(c).lower()
+    out = []
+    if basic_types_in(tl):
+        out.append("searchable")        # has basic land types -> fetchable
+    if has_filter(t, c):
+        out.append("filter")
+    if "deals 1 damage to you" in t:
+        out.append("pain")
+    if "gain 1 life" in t:
+        out.append("lifegain")
+    if "becomes a" in t and "creature" in t:
+        out.append("manland")
+    if is_dfc(c):
+        out.append("MDFC")
+    if "cycling" in t:
+        out.append("cycling")
+    if "snow" in tl:
+        out.append("snow")
+    if "scry" in t:
+        out.append("scry")
+    if "surveil" in t:
+        out.append("surveil")
+    if "return a land you control to its owner" in t:
+        out.append("bounce")
+    if "storage counter" in t:
+        out.append("storage")
+    return out
 
 
 # ---------------------------------------------------------------------------
 # Scoring: percentile combo of popularity (EDHREC) and price, within the set.
-# Used only to order cards inside a tier; the tier itself dominates.
+# Used only to order cards inside each entry-status table.
 # ---------------------------------------------------------------------------
 
 def score_cards(cards):
@@ -304,63 +349,60 @@ def fmt_price(c):
     return "n/a" if p is None else "$%.2f" % p
 
 
+ENTRY_ORDER = ["untapped", "conditional", "tapped"]
+ENTRY_LABEL = {
+    "untapped": "Enters untapped",
+    "conditional": "Conditional (untapped only if a condition is met)",
+    "tapped": "Enters tapped",
+}
+
+
 def build(colors):
     cards = fetch_lands(colors)
     score_cards(cards)
     for c in cards:
-        c["_tier"], c["_cycle"] = classify(c)
+        c["_generic"] = is_rainbow(oracle(c).lower(), c)
+        c["_cycle"] = classify(c)
+        c["_entry"] = entry_status(c)
+        c["_tags"] = tags(c)
     return cards
 
 
 def render(colors, cards, show_generic):
     lines = []
     name = combo_name(colors)
-    generic = [c for c in cards if c["_tier"] == "G"]
-    specific = [c for c in cards if c["_tier"] != "G"]
-    lines.append("# %s (%s) - %d lands (%d %s-specific, %d generic any-color)" % (
+    generic = [c for c in cards if c["_generic"]]
+    specific = [c for c in cards if not c["_generic"]]
+    lines.append("# %s (%s) - %d lands (%d %s-specific, %d any-color)" % (
         name, colors.upper(), len(cards), len(specific),
         colors.upper(), len(generic)))
     lines.append("")
 
-    # group specific by tier then cycle
-    for tier in ("T0", "T1", "T2", "T3"):
-        group = [c for c in specific if c["_tier"] == tier]
+    for entry in ENTRY_ORDER:
+        group = [c for c in specific if c["_entry"] == entry]
         if not group:
             continue
-        lines.append("## %s" % TIER_LABEL[tier])
-        cycles = {}
+        group.sort(key=lambda c: -c["_score"])
+        lines.append("## %s" % ENTRY_LABEL[entry])
+        lines.append("")
+        lines.append("| Cycle | Card | Tags |")
+        lines.append("|---|---|---|")
         for c in group:
-            cycles.setdefault(c["_cycle"], []).append(c)
-        # order cycles by their best card's score
-        ordered = sorted(cycles.items(),
-                         key=lambda kv: -max(c["_score"] for c in kv[1]))
-        for cyc, cs in ordered:
-            cs.sort(key=lambda c: -c["_score"])
-            lines.append("")
-            lines.append("### %s" % cyc)
-            for c in cs:
-                lines.append("- %-34s  score %.2f  edh %-6s %s" % (
-                    c["name"], c["_score"], edhrec(c) if edhrec(c) < 10**9 else "-",
-                    fmt_price(c)))
+            lines.append("| %s | %s | %s |" % (
+                c["_cycle"], c["name"], ", ".join(c["_tags"])))
         lines.append("")
 
-    # generic
-    lines.append("## %s  (%d cards)" % (TIER_LABEL["G"], len(generic)))
-    lines.append("These tap for any color and recur in every identity; treat as "
-                 "generic fixing, not %s cards." % name)
+    lines.append("## Any-color (generic fixing, usable outside %s)  (%d cards)"
+                 % (name, len(generic)))
     generic.sort(key=lambda c: -c["_score"])
-    if show_generic:
-        for c in generic:
-            lines.append("- %-34s  score %.2f  edh %-6s %s" % (
-                c["name"], c["_score"], edhrec(c) if edhrec(c) < 10**9 else "-",
-                fmt_price(c)))
-    else:
-        top = generic[:8]
-        lines.append("Top 8 by score (use --generic to expand all):")
-        for c in top:
-            lines.append("- %-34s  score %.2f  edh %-6s %s" % (
-                c["name"], c["_score"], edhrec(c) if edhrec(c) < 10**9 else "-",
-                fmt_price(c)))
+    shown = generic if show_generic else generic[:8]
+    lines.append("")
+    lines.append("| Card | Entry | Tags |")
+    lines.append("|---|---|---|")
+    for c in shown:
+        lines.append("| %s | %s | %s |" % (c["name"], c["_entry"], ", ".join(c["_tags"])))
+    if not show_generic and len(generic) > 8:
+        lines.append("| ... (%d more, use --generic) | | |" % (len(generic) - 8))
     lines.append("")
     return "\n".join(lines)
 
@@ -371,8 +413,10 @@ def as_json(colors, cards):
         out.append({
             "name": c["name"],
             "colors": colors,
-            "tier": c["_tier"],
+            "generic": c["_generic"],
+            "entry": c["_entry"],
             "cycle": c["_cycle"],
+            "tags": c["_tags"],
             "score": c.get("_score"),
             "edhrec_rank": None if edhrec(c) >= 10**9 else edhrec(c),
             "price_usd": price(c),
