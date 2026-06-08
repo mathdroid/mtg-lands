@@ -1,62 +1,41 @@
 # mtg-lands
 
-Classify and rank the dual / fixing lands for any Magic color identity.
+Classify the dual / fixing lands for any Magic color identity.
 
 `mtg-lands` is a standalone script that wraps the
 [`scry`](https://github.com/mathdroid/scry) CLI. For a color identity it pulls
 every Commander-legal land that fits the identity and can make the relevant
-colors, then records each land's entry status (untapped / conditional /
-tapped), cycle, and tags. Output is three tables per identity, one per entry
-status.
+colors, then for each land works out three things from color-agnostic
+oracle-text patterns: how it enters, its cycle, and its tags.
 
-Full reports live in [`reports/`](reports/):
+Full generated reports live in [`reports/`](reports/):
 [all pairs](reports/all-pairs.md) and [all triples](reports/all-triples.md).
 
-## Best fixing per guild
+## Grouping (no tiers)
 
-The unconditional true dual, the best-scoring conditional land, and the
-most-played conditional land per guild.
+Lands are grouped by **how they enter the battlefield** - there are no quality
+tiers. Three groups:
 
-| Guild | True dual | Best conditional | Most-played conditional |
-|---|---|---|---|
-| Azorius WU | Tundra | Sea of Clouds | Hallowed Fountain |
-| Dimir UB | Underground Sea | Morphic Pool | Watery Grave |
-| Rakdos BR | Badlands | Luxury Suite | Blood Crypt |
-| Gruul RG | Taiga | Stomping Ground | Stomping Ground |
-| Selesnya GW | Savannah | Bountiful Promenade | Temple Garden |
-| Orzhov WB | Scrubland | Vault of Champions | Godless Shrine |
-| Izzet UR | Volcanic Island | Steam Vents | Steam Vents |
-| Golgari BG | Bayou | Overgrown Tomb | Overgrown Tomb |
-| Boros RW | Plateau | Sacred Foundry | Sacred Foundry |
-| Simic GU | Tropical Island | Breeding Pool | Breeding Pool |
+- **Enters untapped** - never enters tapped (true duals, pain, filter, verge,
+  the original/ABUR duals, ...).
+- **Conditional** - enters tapped unless a condition is met (shock, check,
+  fast, slow, battle/tango, bond, reveal, catch-up).
+- **Enters tapped** - always tapped (temples, surveil lands, gates, trilands,
+  bounce, gain, cycling, snow, ...).
 
-## Model
+Each land also carries:
 
-Each identity-specific land gets three things:
+- a **cycle** - a descriptive name (true dual, shock, verge, ...), or `-` when
+  it matches no known cycle (catch-all taplands and genuine one-offs).
+- **tags** - cross-cutting attributes: `searchable` (has basic land types, so a
+  fetchland can find it), `filter`, `pain`, `snow`, `manland`, `cycling`,
+  `mdfc`, `lifegain`, `any-color`.
 
-- **Entry status**, read straight from the oracle text:
-  - `untapped` - always enters untapped (true duals, painlands, filters, verges,
-    horizon lands, Tainted, storage / depletion / locked lands).
-  - `conditional` - untapped only if a condition is met, else tapped (shock,
-    check, fast, slow, battle, bond, reveal, catch-up).
-  - `tapped` - always enters tapped (Temples, surveil lands, bounce, gain,
-    cycling, snow, creature lands, Campus, Bridge, Guildgate, plain taplands).
-- **Cycle** - the recognized land cycle, or `-` if it is a one-off / not a named
-  cycle. Named cycles (Verge, Tainted, Campus, Bridge, Pathway, Guildgate,
-  Triome, the Theros Temples) are matched by card name to avoid sweeping in
-  look-alikes (Nimbus Maze is not a Verge).
-- **Tags** - orthogonal properties: `searchable` (has basic land types, so it is
-  fetchable), `filter`, `pain`, `lifegain`, `manland`, `MDFC`, `cycling`,
-  `snow`, `scry`, `surveil`, `bounce`, `storage`.
-
-The reports present each identity as three tables (untapped / conditional /
-tapped). Rows are ordered by a popularity+price score: the average of two
-percentiles across the result set, EDHREC rank (more played = higher) and USD
-price (more expensive = higher, with a usd -> usd_foil -> usd_etched fallback;
-Reserved List duals with no price fall back to play rate).
-
-Any-color (rainbow) lands tap for any color, recur in every identity, and are
-listed once at the end of each report.
+Within each group, cards are ordered by a popularity+price score: the average of
+two percentiles across the result set, EDHREC rank (more played = higher) and
+USD price (more expensive = higher, with a usd -> usd_foil -> usd_etched
+fallback). Reserved List duals often have no nonfoil price; they show `RL` and
+the score falls back to popularity rather than treating them as $0.
 
 ## Usage
 
@@ -76,9 +55,8 @@ queries exclude).
 
 ## How cycles are detected
 
-Named cycles (Verge, Tainted, Campus, Bridge, Pathway, Guildgate, Triome, the
-Theros Temples) are matched by card name, which is reliable and avoids
-over-matching look-alikes. The rest are color-agnostic structural patterns:
+Cycles are color-agnostic structural patterns, so one taxonomy covers all 10
+pairs and all 10 triples. Examples:
 
 - Fast land: `enters tapped unless you control two or fewer other lands`
 - Check land: `enters tapped unless you control a <basic type>`
@@ -86,10 +64,10 @@ over-matching look-alikes. The rest are color-agnostic structural patterns:
 - Filter: a `{a/b}` hybrid filter ability, or the old `{1},{T}: add {a}{b}`
 - True dual: two basic land types and no drawback text at all
 
-Validation: running `--all-pairs` yields clean per-guild counts (10 true duals,
-10 shocks, 10 checks, 10 fasts, 10 verges, 10 surveil lands, 10 Temples, ...).
-The only fall-throughs (cycle `-`) are genuine one-off lands: Nimbus Maze, River
-of Tears, Mount Doom, Riftstone Portal.
+Validation: running `--all-pairs` yields exactly 10 true duals, 10 shocks, 10
+checks, 10 fasts, 10 pathways, 10 bonds, etc. - one complete cycle per guild.
+The only fall-throughs are genuine one-off lands (River of Tears, Mount Doom,
+Riftstone Portal) with no cycle.
 
 ## Requirements
 
@@ -103,14 +81,24 @@ batch runs (`--all-pairs`, `--all-triples`) are safe.
 
 `reports/` holds two kinds of file:
 
-- **Data** (`all-pairs.json`, `all-triples.json`) - the raw classification
-  straight from `mtg-lands --all-pairs --json` / `--all-triples --json`. This is
-  the source of truth. Regenerate with the commands above (space batch runs out
-  so you do not trip Scryfall's rate limit).
-- **Reports** (`all-pairs.md`, `all-triples.md`) - markdown built from the JSON:
-  per identity, three tables (untapped / conditional / tapped) with Cycle, Card,
-  and Tags columns, plus a shared any-color section. Refresh them when the data
-  changes.
+- **Data** (`all-pairs.json`, `all-triples.json`) - the classification straight
+  from `mtg-lands --all-pairs --json` / `--all-triples --json`. This is the
+  source of truth. Regenerate with the commands above (space batch runs out so
+  you do not trip Scryfall's rate limit).
+- **Reports** (`all-pairs.md`, `all-triples.md`) - readable markdown that reads
+  the JSON as its source. Each guild gets three tables (enters untapped /
+  conditional / enters tapped), with columns Cycle, Card, Tags, EDHREC, Price.
+  The triples report shows the trilands and true duals that are new at three
+  colors and points back to the pair sections for the rest.
 
 The `scry` CLI it wraps backs off and retries on a Scryfall 429 internally, so
 the data regeneration is resilient to brief rate limiting.
+
+## Claude Code skill
+
+`skill/SKILL.md` teaches Claude Code when and how to use `mtg-lands`. Install it
+by symlinking into your skills directory:
+
+```bash
+ln -sfn "$PWD/skill" ~/.claude/skills/mtg-lands
+```
